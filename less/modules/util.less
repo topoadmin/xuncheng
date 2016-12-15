@@ -1,0 +1,59 @@
+@header-height: 40px;   // 头部高度
+@footer-height: 50px;   // 头部高度
+
+@xc: ~"xc-";
+
+// 阴影样式
+@shadow-depth-min: ~"rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px";
+@shadow-depth-max: ~"rgba(0, 0, 0, 0.247059) 0px 14px 45px, rgba(0, 0, 0, 0.219608) 0px 10px 18px";
+
+// 组件
+@header: ~"@{xc}header"; // 头部
+@banner: ~"@{xc}banner"; // 轮播
+@footer: ~"@{xc}footer"; // 轮播
+@dialog: ~"@{xc}dialog"; // 弹窗
+
+// 主要颜色
+@bar-active: #f95640;   // 底部bar选中
+@btn-color: #f65353;    // 重要，确认类
+@txt-color: #333333;    // 重要文字，内容，标题
+@price-colo: #c8362b;   // 商品价格
+
+// 辅助颜色
+@c-txt: #666666;    // 底部bar默认，普通文字
+@c-btn: #767676;    // 不重要的按钮
+@c-input: #999999;  // 输入框提示文字
+@c-btn-db: #bcbcbc; // 不可点击的按钮
+@c-hr: #d0d0d0;     // 1px 边线和分割线
+@c-bg-l: #ffffff;   // 亮色背景
+@c-bg:  #eeeeee;    // 背景颜色
+@c-btn-add: #eb8d8d;// 加入购物车按钮
+
+// 较少颜色
+@c-h-red: #f35858;
+@c-h-blur: #5186d5;
+@c-h-green: #24b7b5;
+@c-h-yellow: #f1a139;
+
+
+.@{xc}bg{
+    background-color: @c-bg;
+}
+
+.@{xc}bg-l{
+    background-color: @c-bg-l;
+}
+
+.@{xc}txt-h-red {
+    color: @c-h-red;
+}
+.@{xc}txt-h-blur {
+    color: @c-h-blur;
+}
+.@{xc}txt-h-green {
+    color: @c-h-green;
+}
+.@{xc}txt-h-yellow {
+    color: @c-h-yellow;
+}
+

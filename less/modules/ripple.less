@@ -1,0 +1,24 @@
+/* 
+ * 波纹
+ * */
+.ta-ripple {
+    position: relative;
+    overflow: hidden;
+    &>.ta-ripple-span {
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.4);
+        pointer-events: none;
+        transform: scale(0);
+        position: absolute;
+        opacity: 1;
+        animation: taRipple 0.4s ease-in;
+    }
+}
+@keyframes taRipple {
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}

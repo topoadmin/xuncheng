@@ -1,0 +1,25 @@
+{
+  "name": "xuncheng",
+  "version": "0.0.1",
+  "description": "寻城",
+  "author": "topoadmin",
+  "devDependencies": {
+    "browser-sync": "^2.8.2",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-filter": "^4.0.0",
+    "gulp-less": "^3.1.0"
+  },
+  "main": "gulpfile.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {},
+  "scripts": {
+    "start": "node gulp"
+  },
+  "license": "ISC",
+  "keywords": [
+    "topo"
+  ]
+}

@@ -1,0 +1,32 @@
+.@{footer} {
+    position: fixed;
+    z-index: 1001;
+    left: 0;right: 0;
+    bottom: 0;
+    background: @c-bg-l;
+    margin: 0 auto;
+    width: 100%;
+    height: @footer-height;
+    border-top: 1px solid @c-hr;
+    .am-navbar{
+        position: static;
+        height: 100%;
+        line-height: 100%;
+        .am-navbar-nav{
+            height: 100%;
+            line-height: 100%;
+            li{
+                a{
+                    padding-top: 8px;
+                    color: @c-txt;
+                    &.am-active{
+                        color: @bar-active;
+                    }
+                    &>.iconfont{
+                        font-size: 26px;
+                    }
+                }
+            }
+        }
+    }
+}

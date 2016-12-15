@@ -1,0 +1,19 @@
+1. 占屏图片尺寸
+	宽: 750
+	高: 424
+	
+
+
+2. 弹窗控制
+	/* 参数
+	 * options
+	 * title	标题
+	 * content	内容
+	 * anim		动画效果 0-5 或者 使用animated ['in','out']
+	 * open		打开回调
+	 * end		关闭回调
+	 * confirm	确定回调
+	 * cancel	取消回调
+	 * */
+	$.DialogFx.alert(options);
+	$.DialogFx.confirm(options);

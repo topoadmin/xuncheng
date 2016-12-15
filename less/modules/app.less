@@ -1,0 +1,262 @@
+
+// 配置工具
+@import "./util.less";
+
+@import "./ripple.less";
+
+// 组件
+@import "./header.less";
+@import "./banner.less";
+@import "./footer.less";
+@import "./dialog.less";
+
+.@{xc}app {
+    &.@{xc}header-fixed {
+        padding-top: @header-height;
+    }
+    padding-bottom: @footer-height;
+}
+
+.@{xc}back-top {
+    position: fixed;
+    z-index: 1000;
+    bottom: @footer-height+15;
+    right: 15px;
+    color: @c-txt;
+    background-color: @c-bg-l;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    border: 1px solid @c-hr;
+    i{
+        font-size: 22px;
+    }
+}
+
+// 底部加载更多
+.@{xc}footer-spin{
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    color: @c-input;
+}
+
+// ¥ 符号样式
+.@{xc}price{
+    font-size: 1.8rem;
+}
+
+// 首页产品布局
+.@{xc}home-product {
+    ul {
+        li {
+            position: relative;
+            margin-top: 3px;
+            .@{xc}home-product-tip {
+                // 商品 提示
+                position: absolute;
+                top: 0;
+                left: 10px;
+                padding: 5px 10px;
+                text-align: center;
+                background-color: #FFFFFF;
+                box-shadow: rgba(0, 0, 0, 0.156863) 0 1px 3px;
+                border-radius:0 0 5px 5px;
+                span{
+                    min-width: 60px;
+                    width: 5rem;
+                    font-size: 1.2rem;
+                    height: 1.4rem;
+                    line-height: 1.4rem;
+                    display: inline-block;
+                    font-weight: 900;
+                    &.@{xc}goods{
+                        color: @c-h-red;
+                        border-left: 3px solid @c-h-red;
+                    }
+                    &.@{xc}gba{
+                        color: @c-h-green;
+                        border-left: 3px solid @c-h-green;
+                    }
+                    &.@{xc}line{
+                        color: @c-h-blur;
+                        border-left: 3px solid @c-h-blur;
+                    }
+                }
+            }
+            .@{xc}home-product-content{
+                position: absolute;
+                bottom: 0;left: 0;
+                padding-left: 10px;
+                width: 100%;
+                background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.13) 100%);;
+                p{
+                    color: #FFFFFF;
+                    margin-top: 0;
+                    margin-bottom: .4rem;
+                }
+                .title{
+                    font-size: 1.6rem;
+                }
+                .merchant{
+                    font-size: 1.4rem;
+                }
+                .price{
+                    position: absolute;
+                    bottom: 0;
+                    right: 10px;
+                    .price-txt{
+                        font-size: 3rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 旅游产品布局
+.@{xc}lvyou-product {
+    ul {
+        li {
+            background-color: @c-bg-l;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+//          img {
+//              box-shadow: @shadow-depth-min;
+//          }
+            .@{xc}lvyou-product-content {
+                margin-top: 1rem;
+                width: 100%;
+                p {
+                    color: @txt-color;
+                    margin: 0;
+                }
+                .title {
+                    font-size: 1.6rem;
+                }
+                .classify {
+                    font-size: 1.4rem;
+                    color: @c-input;
+                }
+                .price {
+                    position: absolute;
+                    color: @price-colo;
+                    bottom: 0;
+                    right: 10px;
+                    .price-txt {
+                        font-size: 3rem;
+                    }
+                }
+            }
+        }
+    }    
+}
+
+// 商城商品布局
+.@{xc}shangcheng-product {
+    display: flex;
+    flex-wrap: wrap;
+    &>div {
+        width: 50%;
+        .@{xc}lvyou-product-content {
+            text-align: center;
+            margin-top: 1rem;
+            width: 100%;
+            p {
+                color: @txt-color;
+                margin: 0;
+            }
+            .title {
+                font-size: 1.4rem;
+            }
+            .classify {
+                font-size: 1.4rem;
+                color: @c-input;
+            }
+            .price {
+                font-weight: 600;
+                color: @price-colo;
+                .@{xc}price{
+                    font-size: 1.2rem;
+                }
+                .price-txt {
+                    font-size: 1.8rem;
+                }
+            }
+        }
+    }
+}
+
+// 发现产品布局
+.@{xc}faxian-product {
+    ul {
+        li {
+            margin: 10px 10px 0 10px;
+        }
+    }
+}
+
+// 用户   
+.@{xc}user {
+    .@{xc}user-header {
+        height: 140px;
+        line-height: 100px;
+        padding: 20px 0;
+        background-image: url(../images/user/user-header-bg.jpg);
+        .@{xc}user-header-img {
+            text-align: center;
+            img {
+                margin: 0 auto;
+                width: 60px;
+            }
+        }
+        .@{xc}user-header-btn {
+            .am-btn {
+                background-color: transparent;
+                border: 1px solid @c-hr;
+                border-radius: 8px;
+                color: @c-bg-l;
+            }
+        }
+    }
+}
+
+// 功能列表
+.@{xc}list-box {
+    margin-top: 10px;
+    .am-list{
+        li{
+            a{
+                color: @c-txt;
+                padding: 0;
+                margin-left: 10px;
+                height: 46px;
+                line-height: 46px;
+                max-width: 280px;
+                word-wrap: normal;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                &>i{
+                    font-size: 20px;  
+                }
+            }
+            &>i{
+                color: @c-txt;
+                position: absolute;
+                right: 1rem;
+                top: 0;
+                line-height: 46px;
+            }
+        }
+    }
+    .xc-list-br {
+        height: 10px;
+        background-color: transparent;        
+    }
+}
+

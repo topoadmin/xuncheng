@@ -1,0 +1,23 @@
+[
+	{
+		"id": "banner-3",
+		"img": "images/banner-3.jpeg",
+		"type": "goods",
+		"tip": "水果特供",
+		"title": "海南新鲜澳芒 芒果干",
+		"merchant": "每日鲜果园",
+		"price": "120"
+	},
+	{
+		"id": "banner-4",
+		"type": "gba",
+		"tip": "城市攻略",
+		"img": "images/banner-4.jpeg"
+	},
+	{
+		"id": "banner-5",
+		"type": "line",
+		"tip": "线路推荐",
+		"img": "images/banner-5.jpeg"
+	}
+]
