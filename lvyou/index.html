@@ -37,7 +37,9 @@
 					<ul>
 						<li v-for="data in lvyouData">
 							<a href="#">
-								<img class="lazy am-img-responsive am-radius" src="../images/bg/home-bg.jpg"  :data-original="data.img" />
+								<div class="xc-lvyou-img">
+									<img class="lazy am-img-responsive am-radius" src="../images/bg/lvyou-bg.jpg"  :data-original="data.img" />
+								</div>
 								<div class="xc-lvyou-product-content">
 									<p class="title">
 										{{data.title}}

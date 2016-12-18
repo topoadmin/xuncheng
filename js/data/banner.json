@@ -1,14 +1,14 @@
 [
 	{
 		"id": "banner-0",
-		"img": "images/banner-0.jpeg"
+		"img": "images/banner-0.jpg"
 	},
 	{
 		"id": "banner-1",
-		"img": "images/banner-1.jpeg"
+		"img": "images/banner-1.jpg"
 	},
 	{
 		"id": "banner-2",
-		"img": "images/banner-2.jpeg"
+		"img": "images/banner-2.jpg"
 	}
 ]

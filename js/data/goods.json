@@ -4,7 +4,7 @@
 		"img": "../images/goods-0.jpg",
 		"type": "goods",
 		"classify": "优选",
-		"title": "测试换行测试换行测试换行测试换行",
+		"title": "精品长柄牛奶草莓精品长柄牛奶草莓",
 		"standard":"200克*2袋",
 		"price": "139.00"
 	},{
@@ -59,7 +59,7 @@
 		"id": "goods-7",
 		"img": "../images/goods-7.jpg",
 		"type": "goods",
-		"classify": "精选",
+		"classify": "优选",
 		"title": "精品长柄牛奶草莓",
 		"standard":"200克*2袋",
 		"price": "139.00"

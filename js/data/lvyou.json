@@ -1,7 +1,7 @@
 [
 	{
 		"id": "lvyou-0",
-		"img": "../images/banner-0.jpeg",
+		"img": "../images/banner-0.jpg",
 		"type": "gba",
 		"title": "全城迅游 领略不一样的城市风光",
 		"classify": "精选城市自驾游",
@@ -9,7 +9,7 @@
 	},
 	{
 		"id": "lvyou-1",
-		"img": "../images/banner-1.jpeg",
+		"img": "../images/banner-1.jpg",
 		"type": "gba",
 		"title": "全城迅游 领略不一样的城市风光",
 		"classify": "精选城市自驾游",
@@ -17,7 +17,7 @@
 	},
 	{
 		"id": "lvyou-2",
-		"img": "../images/banner-2.jpeg",
+		"img": "../images/banner-2.jpg",
 		"type": "gba",
 		"title": "全城迅游 领略不一样的城市风光",
 		"classify": "精选城市自驾游",

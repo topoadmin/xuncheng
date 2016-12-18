@@ -38,24 +38,67 @@
 			<div class="am-g xc-g xc-g-shangcheng">
 				<div class="xc-shangcheng-product am-cf">
 					
-					<div v-for="data in goodsData" class="am-u-sm-6">
-						<a href="#">
-							<img class="lazy am-img-responsive" src="../images/bg/goodx-bg.jpg"  :data-original="data.img" />
-						</a>
-						<div class="xc-lvyou-product-content">
-							<p class="title am-text-truncate">
-								<span class="am-padding-right-xs">{{data.classify}}</span>
-								<span>{{data.title}}</span>
-							</p>
-							<p class="classify am-text-truncate">
-								{{data.standard}}
-							</p>
-							<p class="price">
-								<span class="xc-price">¥</span>
-								<span class="price-txt">{{data.price}}</span>
-							</p>
-						</div>
-					</div>
+					<ul class="xc-flex"	v-for="(index, data) in goodsData" v-if="index % 2">
+						<li>
+							<a href="#">
+								<img class="lazy am-img-responsive" src="../images/bg/goodx-bg.jpg"  :data-original="goodsData[index-1].img" />
+							</a>
+							<div class="xc-lvyou-product-content">
+								<p class="title">
+									<span class="am-padding-right-xs">{{goodsData[index-1].classify}}</span>
+									<span>{{goodsData[index-1].title}}</span>
+								</p>
+								<p class="classify">
+									{{goodsData[index-1].standard}}
+								</p>
+								<p class="price">
+									<span class="xc-price">¥</span>
+									<span class="price-txt">{{goodsData[index-1].price}}</span>
+								</p>
+							</div>
+						</li>
+						<li>
+							<a href="#">
+								<img class="lazy am-img-responsive" src="../images/bg/goodx-bg.jpg"  :data-original="data.img" />
+							</a>
+							<div class="xc-lvyou-product-content">
+								<p class="title">
+									<span class="am-padding-right-xs">{{data.classify}}</span>
+									<span>{{data.title}}</span>
+								</p>
+								<p class="classify">
+									{{data.standard}}
+								</p>
+								<p class="price">
+									<span class="xc-price">¥</span>
+									<span class="price-txt">{{data.price}}</span>
+								</p>
+							</div>
+						</li>
+					</ul>
+					
+					<ul class="xc-flex"	v-if="goodsData.length % 2">
+						<li>
+							<a href="#">
+								<img class="lazy am-img-responsive" src="../images/bg/goodx-bg.jpg"  :data-original="goodsData[goodsData.length-1].img" />
+							</a>
+							<div class="xc-lvyou-product-content">
+								<p class="title">
+									<span class="am-padding-right-xs">{{goodsData[goodsData.length-1].classify}}</span>
+									<span>{{goodsData[goodsData.length-1].title}}</span>
+								</p>
+								<p class="classify">
+									{{goodsData[goodsData.length-1].standard}}
+								</p>
+								<p class="price">
+									<span class="xc-price">¥</span>
+									<span class="price-txt">{{goodsData[goodsData.length-1].price}}</span>
+								</p>
+							</div>
+						</li>
+						<li></li>
+					</ul>
+					
 				</div>
 			</div>
 

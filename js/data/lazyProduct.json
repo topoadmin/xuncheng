@@ -1,7 +1,7 @@
 [
 	{
 		"id": "banner-3",
-		"img": "images/banner-3.jpeg",
+		"img": "images/banner-3.jpg",
 		"type": "goods",
 		"tip": "水果特供",
 		"title": "海南新鲜澳芒 芒果干",
@@ -12,12 +12,12 @@
 		"id": "banner-4",
 		"type": "gba",
 		"tip": "城市攻略",
-		"img": "images/banner-4.jpeg"
+		"img": "images/banner-4.jpg"
 	},
 	{
 		"id": "banner-5",
 		"type": "line",
 		"tip": "线路推荐",
-		"img": "images/banner-5.jpeg"
+		"img": "images/banner-5.jpg"
 	}
 ]
