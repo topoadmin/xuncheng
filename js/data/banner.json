@@ -1,14 +1,17 @@
 [
 	{
 		"id": "banner-0",
+		"type": "goods",
 		"img": "images/banner-0.jpg"
 	},
 	{
 		"id": "banner-1",
+		"type": "faxian",
 		"img": "images/banner-1.jpg"
 	},
 	{
 		"id": "banner-2",
+		"type": "lvyou",
 		"img": "images/banner-2.jpg"
 	}
 ]

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" class="js cssanimations">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>寻城</title>
+		<meta id="meta-keywords" name="keywords" content="寻城">
+		<meta id="meta-description" name="description" content="寻城">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="renderer" content="webkit">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+		<meta name="apple-mobile-web-app-title" content="寻城">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no, email=no" />
+		<meta name="robots" content="index,follow" />
+		<meta http-equiv="Cache-Control" content="no-siteapp">
+		<link rel="icon" type="image/png" href="../assets/images/favicon.png">
+		
+		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_rs14nvnw70kke29.css" />
+		<link rel="stylesheet" type="text/css" href="../css/main.css" />
+	</head>
+	
+	<body class="xc-bg">
+		<div id="xc-app" class="xc-app xc-header-fixed" v-cloak>
+			<header class="am-header xc-header">
+				<div class="am-header-left am-header-nav">
+		          	<a href="javascript:$.xuncheng.back();">
+		            	<i class="am-header-icon iconfont icon-zuo"></i>
+		          	</a>
+		      	</div>
+				<span class="am-header-title">全部评论</span>
+			</header>
+			
+			<div class="am-g">
+				
+				<div class="xc-comment">
+					<div class="xc-comment-list-box">
+						<ul class="xc-comment-list">
+							<li v-for="cData in commentData">
+								<div class="xc-comment-list-hd">
+									<img class="xc-comment-avatar" :src="cData.userImg" />
+									<div class="xc-comment-name">{{ cData.userName }}</div>
+									<div class="xc-comment-time">{{ cData.time }}</div>
+								</div>
+								<div class="xc-comment-list-bd">
+									<p class="xc-comment-content">
+										{{ cData.content }}
+									</p>
+									<div class="xc-comment-imgs">
+										<img v-for="cImgs in cData.imgs" :data-original="cImgs" src="../images/bg/goods-bg.jpg" />
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				
+			</div>
+			
+			<!-- 此元素放在底部 -->
+			<div id="xc-footer-lazy" class="xc-footer-spin">
+				<span class="am-icon-spinner am-icon-spin"></span> 正在加载中...
+			</div>
+			
+			<footer class="xc-footer xc-footer-comment">
+				<p>我要评论</p>
+			</footer>
+			
+		</div>
+		
+		<script src="../assets/js/vue.min.js"></script>
+		<script src="../assets/js/fastclick.min.js"></script>
+		<script src="../assets/js/jquery.min.js"></script>
+		<script src="../assets/js/amazeui.min.js"></script>
+		<script src="../assets/js/amazeui.lazyload.min.js"></script>
+		<script src="../js/xuncheng.js"></script>
+		<script type="text/javascript">
+			window.vueModel = new Vue({
+				el: "#xc-app",
+				data: {
+					queryId: $.xuncheng.getUrlParam('id'),
+					commentData: []
+				}
+			});
+			
+			$(function(){
+				var $footerLazy = $('#xc-footer-lazy');
+				lazyProduct(function() { 
+					// 初始加载一次数据，然后监控滚动加载事件
+					$footerLazy.on('lazy.open', function() {
+						lazyProduct(function() {
+							$footerLazy.trigger('lazy.end')
+						});
+					});
+				});
+			})
+			function lazyProduct(fn) {
+				$.getJSON('../js/data/commentData.json', function(data) {
+					data.forEach(function(value) {
+						vueModel.commentData.push(value)
+					})
+					vueModel.$nextTick(function(){
+						$('.xc-comment-imgs > img').lazyload();
+					})
+					if($.isFunction(fn)) {
+						fn()
+					}
+				}).fail(function() {
+					$.DialogFx.alert({content: '服务器内容错误'})
+				})
+			}
+			
+		</script>
+	</body>
+</html>

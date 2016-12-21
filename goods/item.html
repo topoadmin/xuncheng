@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" class="js cssanimations">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>寻城</title>
+		<meta id="meta-keywords" name="keywords" content="寻城">
+		<meta id="meta-description" name="description" content="寻城">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="renderer" content="webkit">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+		<meta name="apple-mobile-web-app-title" content="寻城">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no, email=no" />
+		<meta name="robots" content="index,follow" />
+		<meta http-equiv="Cache-Control" content="no-siteapp">
+		<link rel="icon" type="image/png" href="../assets/images/favicon.png">
+		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_rs14nvnw70kke29.css" />
+		<link rel="stylesheet" type="text/css" href="../css/main.css" />
+	</head>
+
+	<body class="xc-bg">
+		<div id="xc-app" class="xc-app xc-header-fixed" v-cloak>
+			<header class="am-header xc-header">
+				<div class="am-header-left am-header-nav">
+					<a href="javascript:$.xuncheng.back();">
+						<i class="am-header-icon iconfont icon-zuo"></i>
+					</a>
+				</div>
+				<span class="am-header-title">商品详情</span>
+				<div class="am-header-right am-header-nav">
+					<a href="javascript:$.xuncheng.share();">
+						<i class="am-header-icon iconfont icon-fenxiang icon-lg"></i>
+					</a>
+				</div>
+			</header>
+
+			<!-- 轮播 -->
+			<div class="xc-banner xc-goods-banner" id="goods-banner">
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" v-for="bData in goodsData.banner">
+							<a href="javascript:void(0);">
+								<img class="swiper-lazy" src="../images/bg/480.jpg" :data-src="bData" />
+							</a>
+						</div>
+					</div>
+					<div class="swiper-pagination swiper-pagination-goods"></div>
+				</div>
+			</div>
+
+			<div class="am-g xc-item-goods">
+				<p class="xc-item-title">
+					{{ goodsData.title }}
+				</p>
+				<p class="price">
+					<span class="xc-price">¥</span>
+					<span class="price-txt">
+						{{ goodsData.price }}
+					</span>
+				</p>
+				<div class="xc-hr"></div>
+
+				<p class="merchant">
+					<img src="../images/icon/icon-dianpu.png" width="20">
+					<span class="am-text-xs">{{ goodsData.merchant }}</span>
+				</p>
+
+			</div>
+
+			<div class="am-g">
+
+				<div class="xc-video-box" id="xc-video-box">
+					<!--<div class="xc-video-play">
+						<i class="am-icon-play xc-video-play-icon"></i>
+						<img class="lazy" src="../images/bg/480.jpg" />
+					</div>-->
+
+					<video class="xc-video" :src="goodsData.video.src" controls="controls" loop="loop" :poster="goodsData.video.img"></video>
+				</div>
+
+				<img v-for="explain in goodsData.explain" class="am-img-responsive lazy" :data-original="explain" src="../images/bg/750.jpg" />
+
+				<div class="xc-list-box">
+					<ul class="am-list">
+						<li class="ta-ripple">
+							<a href="javascript:;">
+								<img class="xc-list-icon-left" src="../images/icon/icon-pInfo.png" alt="" />
+								<span>发现	专题名称</span>
+								<i class="iconfont icon-you xc-list-icon-right"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<p class="am-padding-vertical-xs">用户评论({{commentData.length}})条</p>
+
+				<div class="xc-comment">
+					<div class="xc-comment-list-box">
+						<ul class="xc-comment-list">
+							<li v-for="cData in commentData">
+								<div class="xc-comment-list-hd">
+									<img class="xc-comment-avatar" :src="cData.userImg" />
+									<div class="xc-comment-name">{{ cData.userName }}</div>
+									<div class="xc-comment-time">{{ cData.time }}</div>
+								</div>
+								<div class="xc-comment-list-bd">
+									<p class="xc-comment-content">
+										{{ cData.content }}
+									</p>
+									<div class="xc-comment-imgs">
+										<img v-for="cImgs in cData.imgs" :data-original="cImgs" src="../images/bg/goods-bg.jpg" />
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="xc-comment-footer">
+						<a :href="'../component/comment.html?id='+queryId">
+							查看全部点评
+						</a>
+					</div>
+				</div>
+
+			</div>
+
+			<footer class="xc-footer xc-footer-goods am-g">
+				<div class="am-u-sm-4">
+					<a class="am-u-sm-6" href="../user/index.html">
+						<i class="iconfont icon-user icon-xxl"></i>
+					</a>
+					<a class="am-u-sm-6" href="../component/cart.html">
+						<i class="iconfont icon-gouwuche icon-xxl"></i>
+					</a>
+				</div>
+				<div class="am-u-sm-4 xc-add-btn">
+					加入购物车
+				</div>
+				<div class="am-u-sm-4 xc-submit-btn">
+					立即购买
+				</div>
+			</footer>
+
+		</div>
+
+		<script src="../assets/js/vue.min.js"></script>
+		<script src="../assets/js/fastclick.min.js"></script>
+		<script src="../assets/js/jquery.min.js"></script>
+		<script src="../assets/js/amazeui.min.js"></script>
+		<script src="../assets/js/amazeui.lazyload.min.js"></script>
+		<script src="../assets/js/swiper-3.4.0.jquery.min.js"></script>
+		<script src="../js/xuncheng.js"></script>
+		<script type="text/javascript">
+			window.vueModel = new Vue({
+				el: "#xc-app",
+				data: {
+					queryId: $.xuncheng.getUrlParam('id'),
+					goodsData: {},
+					commentData: []
+				}
+			});
+
+			;
+			(function() {
+				$.getJSON('../js/data/goodsData.json', function(data) {
+					vueModel.goodsData = data;
+					vueModel.$nextTick(function() {
+						new Swiper('#goods-banner>.swiper-container', {
+							pagination: '.swiper-pagination',
+							paginationClickable: true,
+							lazyLoading: true,
+							lazyLoadingInPrevNext: true,
+							lazyLoadingInPrevNextAmount: 2
+						});
+						$('img.lazy').lazyload();
+					})
+				}).fail(function() {
+					$.DialogFx.alert({content: '服务器内容错误'})
+				})
+			}());
+
+			$(function() {
+				$.getJSON('../js/data/comment.json', function(data) {
+					vueModel.commentData = data;
+					vueModel.$nextTick(function() {
+						$('.xc-comment-imgs > img').lazyload();
+					})
+				}).fail(function() {
+					$.DialogFx.alert({content: '服务器内容错误'})
+				})
+			})
+		</script>
+	</body>
+
+</html>

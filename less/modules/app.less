@@ -1,11 +1,13 @@
 // 配置工具
 @import "./util.less";
-@import "./ripple.less";
-// 组件
+@import "./ripple.less"; // 组件
 @import "./header.less";
 @import "./banner.less";
 @import "./footer.less";
 @import "./dialog.less";
+@import "./comment.less";
+@import "./video.less";
+
 .@{xc}app {
     &.@{xc}header-fixed {
         padding-top: @header-height;
@@ -24,7 +26,6 @@
     line-height: 40px;
     text-align: center;
     border-radius: 50%;
-    border: 1px solid @c-hr;
     i {
         font-size: 22px;
     }
@@ -37,6 +38,11 @@
     text-align: center;
     color: @c-input;
 }
+
+.@{xc}text-weight-bold {
+    font-weight: bold;
+}
+
 // ¥ 符号样式
 .@{xc}price {
     font-size: 1.9rem;
@@ -69,11 +75,11 @@
                         color: @c-h-red;
                         border-left: 3px solid @c-h-red;
                     }
-                    &.@{xc}gba {
+                    &.@{xc}faxian {
                         color: @c-h-green;
                         border-left: 3px solid @c-h-green;
                     }
-                    &.@{xc}line {
+                    &.@{xc}lvyou {
                         color: @c-h-blur;
                         border-left: 3px solid @c-h-blur;
                     }
@@ -118,10 +124,10 @@
             position: relative;
             margin: 10px 0;
             padding: 10px;
-            .xc-lvyou-img{
+            .xc-lvyou-img {
                 max-height: 150px;
                 overflow-y: hidden;
-                img{
+                img {
                     border-radius: 5px;
                 }
             }
@@ -158,10 +164,10 @@
     &>div {
         float: left !important;
         padding: 0;
-        &:nth-child(odd){
+        &:nth-child(odd) {
             padding-right: 1.5px;
         }
-        &:nth-child(even){
+        &:nth-child(even) {
             padding-left: 1.5px;
         }
         margin-top: 3px;
@@ -184,7 +190,7 @@
                 font-size: 1.4rem;
             }
             .price {
-                font-weight: 600;
+                font-weight: bold;
                 color: @price-colo;
                 .@{xc}price {
                     font-size: 1.2rem;
@@ -196,19 +202,18 @@
         }
     }
 }
-
 // TODO 商城商品 flex 布局, 标题可跨行
 .@{xc}shangcheng-product {
     ul.xc-flex {
         margin-top: 3px;
         display: flex;
         flex-wrap: wrap;
-        &>li{
+        &>li {
             background-color: @c-bg-l;
-            &:nth-child(odd){
+            &:nth-child(odd) {
                 margin-right: 1.5px;
             }
-            &:nth-child(even){
+            &:nth-child(even) {
                 margin-left: 1.5px;
             }
             flex: 1;
@@ -228,7 +233,6 @@
                     font-size: 1.4rem;
                 }
                 .price {
-                    font-weight: 600;
                     color: @price-colo;
                     .@{xc}price {
                         font-size: 1.2rem;
@@ -241,7 +245,6 @@
         }
     }
 }
-
 // 发现产品布局
 .@{xc}faxian-product {
     padding-top: 1px;
@@ -251,7 +254,7 @@
         }
     }
 }
-// 用户   
+// 用户
 .@{xc}user {
     .@{xc}user-header {
         height: 135px;
@@ -279,7 +282,7 @@
             height: 29px;
             top: 53px;
             left: 125px;
-            border: 1px solid @c-hr;
+            border: @hr;
             border-radius: 8px;
             color: @c-bg-l;
             text-align: center;
@@ -291,12 +294,11 @@
         }
     }
 }
-// 70cbde  e18873  61d87b
-
 // 功能列表
 .@{xc}list-box {
     margin-top: 10px;
     .am-list {
+        margin-bottom: 0;
         li {
             a {
                 color: @c-txt;
@@ -308,7 +310,7 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
-                &.no-icon{
+                &.no-icon {
                     padding-left: 10px;
                 }
                 i {
@@ -323,7 +325,7 @@
                         color: @c-hr;
                     }
                 }
-                img{
+                img {
                     position: absolute;
                     font-size: 20px;
                     width: 22px;
@@ -337,6 +339,16 @@
                         color: @c-hr;
                     }
                 }
+                .price {
+                    position: absolute;
+                    top: 0;
+                    right: 40px;
+                    color: @price-colo;
+                    font-size: 1.6rem;
+                    .@{xc}price {
+                        font-size: 1.6rem;
+                    }
+                }
             }
         }
     }
@@ -345,3 +357,218 @@
         background-color: transparent;
     }
 }
+
+// 内容
+.@{xc}item-goods {
+    background-color: @c-bg-l;
+    border-bottom: @hr;
+    padding: 12px 10px 10px 10px;
+    margin-bottom: 10px;
+    .@{xc}item-title{
+        color: @txt-color;
+        font-size: 1.6rem;
+    }
+    .price {
+        color: @price-colo;
+        .@{xc}price {
+            font-size: 1.5rem;
+        }
+        .price-txt {
+            font-size: 2.4rem;
+        }
+    }
+}
+
+.@{xc}cart-list {
+    @xclh: 108px;
+    border-bottom: @hr;
+    li {
+        width: 100%;
+        padding-left: 0;
+        display: flex;
+        height: @xclh;
+        .@{xc}cart-left, .@{xc}cart-right {
+            height: @xclh;
+        }
+        .@{xc}cart-left {
+            line-height: @xclh;
+            width: 42px;
+            padding: 0 12px 0 10px;
+            img {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+            }
+        }
+        .@{xc}cart-right {
+            flex: 1;
+            border-bottom: @hr;
+            position: relative;
+            &>.@{xc}cart-right-info {
+                display: flex;
+                height: @xclh;
+                img {
+                    margin: 19px 12px 0 0;
+                    width: 70px;
+                    height: 70px;
+                }
+                &>div {
+                    position: relative;
+                    margin: 19px 0 21px;
+                    width: 100%;
+                    height: @xclh - 40px;
+                    .title{
+                        max-width: 80%;
+                        font-size: 1.4rem;
+                        color: @c-txt;
+                    }
+                    .price {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        font-weight: 600;
+                        color: @price-colo;
+                        .@{xc}price {
+                            font-size: 1.2rem;
+                        }
+                        .price-txt {
+                            font-size: 1.8rem;
+                        }
+                    }
+                }
+            }
+            &>.@{xc}cart-edit {
+                position: absolute;
+                right: 10px;
+                bottom: 19px;
+                width: 96px;
+                height: 28px;
+                .xc-cart-edit-left, .xc-cart-edit-input, .xc-cart-edit-right {
+                    height: 100%;
+                    text-align: center;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 28px;
+                    line-height: 32px;
+                }
+                .xc-cart-edit-left {
+                    border: @hr;
+                    border-radius: 5px 0 0 5px;
+                }
+                .xc-cart-edit-input {
+                    width: 40px;
+                    left: 28px;
+                    border: 0;
+                    padding: 0;
+                    font-size: 1rem;
+                    border-top: @hr;
+                    border-bottom: @hr;
+                }
+                .xc-cart-edit-right {
+                    left: 68px;
+                    border: @hr;
+                    border-radius: 0 5px 5px 0;
+                }
+            }
+        }
+    }
+    li:last-child{
+        .@{xc}cart-right {
+            border: 0;
+        }
+    }
+}
+
+// 登录
+.@{xc}login{
+    margin-top: 104px;
+    text-align: center;
+    .title {
+        font-size: 18px;   
+        height: 24px;
+        color: @c-txt; 
+        position: relative;
+        display: inline-block;
+        
+        &:before, &:after{
+            content: " ";
+            position: absolute;
+            width: 70px;
+            top: 13px;
+            border-top: @hr;
+            border-width: 1px;
+        }
+        &:before {
+            left: -82px;
+        }
+        &:after {
+            right: -82px;
+        }
+    }
+    .@{xc}third-party{
+        margin-top: 50%;
+        img {
+            width: 49px;
+            margin-right: 48px;
+        }
+        img:last-child {
+            margin-right: 0;
+        }
+    }
+}
+
+// 发现产品详情页
+.@{xc}faxian-item {
+    background: @c-bg-l;
+    border-bottom: @hr;
+    margin-top: 10px;
+    
+    .@{xc}faxian-item-user {
+        position: relative;
+        height: 50px;
+        line-height: 50px;
+        margin: 0 10px;
+        img {
+            position: absolute;
+            top: -31px;
+            left: 0;
+            width: 63px;
+            height: 63px;
+            border-radius: 50%;
+            box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 0px, rgba(0, 0, 0, 0.23) 0px 1px 0px;;
+        }
+        .title {
+            display: inline-block;
+            width: 100%;
+            padding-left: 85px;
+            font-size: 1.7rem;
+        }
+        .time {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 1.6rem;
+            color: @c-input;
+        }
+    }
+    .@{xc}faxian-item-info {
+        margin: 20px;
+        .title {
+            display: inline;
+            padding-bottom: 5px;
+            font-size: 1.8rem;
+            color: @c-h-yellow;
+            border-bottom: @hr;
+            border-color: @c-h-yellow;
+        }
+        .content {
+            text-indent: 2rem;
+            font-size: 1.7rem;
+            line-height: 2.8rem;
+            margin: 10px 0;
+        }
+    }
+}
+
+

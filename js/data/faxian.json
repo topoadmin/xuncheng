@@ -1,25 +1,25 @@
 [
 	{
 		"id": "faxian-0",
-		"type": "gba",
+		"type": "faxian",
 		"tip": "城市攻略",
 		"img": "../images/banner-0.jpg"
 	},
 	{
 		"id": "faxian-1",
-		"type": "gba",
+		"type": "faxian",
 		"tip": "城市攻略",
 		"img": "../images/banner-1.jpg"
 	},
 	{
 		"id": "faxian-2",
-		"type": "gba",
+		"type": "faxian",
 		"tip": "城市攻略",
 		"img": "../images/banner-2.jpg"
 	},
 	{
 		"id": "faxian-3",
-		"type": "gba",
+		"type": "faxian",
 		"tip": "城市攻略",
 		"img": "../images/banner-3.jpg"
 	}

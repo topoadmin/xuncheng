@@ -7,7 +7,7 @@
     margin: 0 auto;
     width: 100%;
     height: @footer-height;
-    border-top: 1px solid @c-hr;
+    border-top: @hr;
     .am-navbar{
         position: static;
         height: 100%;
@@ -25,6 +25,94 @@
                     &>.iconfont{
                         font-size: 26px;
                     }
+                }
+            }
+        }
+    }
+    &.@{footer}-comment {
+        p {
+            text-align: center;
+            line-height: @footer-height;
+        }
+    }
+    
+    &.@{footer}-goods {
+        [class*="am-u-"] {
+            height: @footer-height;
+            padding: 0;
+            text-align: center;
+            line-height: @footer-height;
+        }
+        .@{xc}add-btn, .@{xc}submit-btn {
+            color: @c-bg-l;
+        }
+        .@{xc}add-btn {
+            background: @c-btn-add;
+        }
+        .@{xc}submit-btn {
+            background: @btn-color;
+        }
+    }
+    
+    &.@{footer}-cart{
+        display: flex;
+        .@{footer}-cart-left, .@{footer}-cart-right {
+            height: 100%;
+        }
+        .@{footer}-cart-left {
+            line-height: @footer-height;
+            width: 42px;
+            padding: 0 12px 0 10px;
+            img {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+            }
+        }
+        .@{footer}-cart-right {
+            flex: 1;
+            .price {
+                display: inline;
+                line-height: @footer-height;
+                color: @price-colo;
+                font-size: 18px;
+                .title {
+                    color: @c-txt;
+                }
+            }
+            .xc-btn{
+                float: right;
+                width: 120px;
+                height: 100%;
+                line-height: @footer-height;
+                text-align: center;
+                color: @c-bg-l;
+                background: @btn-color;
+            }
+        }
+    }
+    
+    &.@{footer}-faxian{
+        display: flex;
+        &>div {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            height: 100%;
+            line-height: @footer-height;
+            font-size: 1.7rem;
+            img {
+                width: 30px;
+            }
+            &:last-child{
+                &:before {
+                    content: " ";
+                    position: absolute;
+                    top: 16px;
+                    left: 0;
+                    width: 1px;
+                    height: 18px;
+                    background: @c-hr;
                 }
             }
         }

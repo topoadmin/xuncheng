@@ -36,10 +36,10 @@ input[type=number]::-webkit-outer-spin-button {
 .am-show {
     display: block !important;
 }
-.iconfont.icon-max {
-    font-size: 26px;
-}
 
+p {
+    margin: 0;
+}
 @import './modules/app.less'; 
 
 .am-form select[readonly],
@@ -60,6 +60,10 @@ input[type=number]::-webkit-outer-spin-button {
 .am-form input[type="color"][readonly],
 .am-form-field[readonly] {
     background-color: @c-btn-db;
+}
+
+a, a:hover, a:focus, a:active{
+    color: @txt-color;
 }
 
 .swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction{

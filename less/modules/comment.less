@@ -1,0 +1,74 @@
+// 评论组件
+.@{comment} {
+    background-color: @c-bg-l;
+    margin-bottom: 5px;
+    
+    .@{comment}-list-box {
+        padding: 0 10px;
+        ul{
+            li{
+                border-bottom: @hr;
+                padding-bottom: 15px;
+                &:last-child{
+                    border: 0;
+                }
+                
+                .@{comment}-list-hd {
+                    position: relative;
+                    height: 58px;
+                    .@{comment}-avatar{
+                        width: 34px;
+                        height: 34px;
+                        border-radius: 50%;
+                        border: @thr;
+                        position: absolute;
+                        top: 12px;
+                        left: 0;
+                    }
+                    .@{comment}-name {
+                        height: 13px;
+                        line-height: 13px;
+                        font-size: 1.3rem;
+                        position: absolute;
+                        top: 23px;
+                        left: 42px;
+                    }
+                    .@{comment}-time {
+                        height: 10px;
+                        line-height: 10px;
+                        font-size: 1rem;
+                        color: @c-input;
+                        position: absolute;
+                        top: 25px;
+                        right: 0;
+                    }
+                }
+                
+                .@{comment}-list-bd {
+                    .@{comment}-content {
+                       font-size: 1.3rem; 
+                    }
+                    .@{comment}-imgs {
+                        img {
+                            width: 23%;
+                            padding-right: 6px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    .@{comment}-footer {
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+        font-size: 1.3rem;
+        color: @txt-color;
+        border-top: @hr;
+        border-bottom: @hr;
+        a{
+            display: inline-block;
+        }
+    }
+}

@@ -1,17 +1,75 @@
-@header-height: 44px;   // 头部高度
-@footer-height: 49px;   // 头部高度
+@header-height: 45px;   // 头部高度
+@footer-height: 50px;   // 头部高度
 
 @xc: ~"xc-";
-
-// 阴影样式
-@shadow-depth-min: ~"rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px";
-@shadow-depth-max: ~"rgba(0, 0, 0, 0.247059) 0px 14px 45px, rgba(0, 0, 0, 0.219608) 0px 10px 18px";
 
 // 组件
 @header: ~"@{xc}header"; // 头部
 @banner: ~"@{xc}banner"; // 轮播
 @footer: ~"@{xc}footer"; // 轮播
 @dialog: ~"@{xc}dialog"; // 弹窗
+@comment: ~"@{xc}comment"; // 弹窗
+@video: ~"@{xc}video"; // 弹窗
+
+// Font  size
+// -----------------------------------------------------------------------------
+
+@global-font-size:              1.6rem; //16px
+
+@font-size-xxs:           @global-font-size - 0.6; // 10px - 1rem
+@font-size-xs:            @global-font-size - 0.4; // 12px
+@font-size-sm:            @global-font-size - 0.2; // 14px
+@font-size-lg:            @global-font-size + 0.2; // 18px
+@font-size-xl:            @global-font-size + 0.8; // 24px
+@font-size-xxl:           @global-font-size * 2;   // 32px
+@font-size-xxxl:          @global-font-size * 2 + 1; // 42px
+
+.iconfont {
+    &.icon-xxs{
+        font-size: @font-size-xxs;
+    }
+    &.icon-xs{
+        font-size: @font-size-xs;
+    }
+    &.icon-sm{
+        font-size: @font-size-sm;
+    }
+    &.icon-lg{
+        font-size: @font-size-lg;
+    }
+    &.icon-xl{
+        font-size: @font-size-xl;
+    }
+    &.icon-xxl{
+        font-size: @font-size-xxl;
+    }
+    &.icon-xxxl{
+        font-size: @font-size-xxxl;
+    }
+}
+
+// 阴影样式
+@shadow-depth-min: rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px;
+@shadow-depth-max: rgba(0, 0, 0, 0.247059) 0px 14px 45px, rgba(0, 0, 0, 0.219608) 0px 10px 18px;
+
+@hr: 1px solid @c-hr;
+@thr: 1px solid transparent;
+
+.@{xc}b {
+ border: @hr;   
+}
+.@{xc}bt {
+    border-top: @hr;
+}
+.@{xc}bb {
+    border-bottom: @hr;
+}
+.@{xc}bl {
+    border-left: @hr;
+}
+.@{xc}br {
+    border-right: @hr;
+}
 
 // 主要颜色
 @bar-active: #f95640;   // 底部bar选中
@@ -35,6 +93,13 @@
 @c-h-blur: #5186d5;
 @c-h-yellow: #f1a139;
 
+.@{xc}hr{
+    border-color: @c-hr;
+    border-top:1px dashed @c-hr;
+    height: 1px;
+    overflow:hidden;
+    margin: 10px 0;
+}
 
 .@{xc}bg{
     background-color: @c-bg;

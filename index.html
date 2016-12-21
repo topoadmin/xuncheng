@@ -15,8 +15,7 @@
 		<meta name="format-detection" content="telephone=no, email=no" />
 		<meta name="robots" content="index,follow" />
 		<meta http-equiv="Cache-Control" content="no-siteapp">
-		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-
+		<link rel="icon" type="image/png" href="assets/images/favicon.png">
 		<link rel="stylesheet" type="text/css" href="assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="assets/css/animate.css" />
 		<link rel="stylesheet" type="text/css" href="assets/css/swiper-3.4.0.min.css" />
@@ -31,17 +30,17 @@
 					寻城
 				</span>
 			</header>
+			
 			<!-- 轮播 -->
 			<div class="xc-banner" id="home-banner">
 				<div class="swiper-container">
 					<div class="swiper-wrapper">
 						<div class="swiper-slide" v-for="bData in banner">
-							<a href="#">
+							<a :href=" bData.type + '/item.html?id='+bData.id">
 								<img class="swiper-lazy" src="images/bg/home-bg.jpg" :data-src="bData.img"  />
 							</a>
 						</div>
 					</div>
-					<!-- Add Pagination -->
 					<div class="swiper-pagination"></div>
 				</div>
 			</div>
@@ -50,7 +49,7 @@
 				<div class="xc-home-product">
 					<ul>
 						<li v-for="data in product">
-							<a href="#">
+							<a :href=" data.type + '/item.html?id='+data.id">	
 								<div class="xc-home-product-tip">
 									<span :class="['xc-'+ data.type]">{{data.tip}}</span>
 								</div>
@@ -80,7 +79,7 @@
 				<span class="am-icon-spinner am-icon-spin"></span> 正在加载中...
 			</div>
 
-			<footer class="xc-footer">
+			<footer class="xc-footer xc-bt">
 				<div class="am-navbar am-cf">
 					<ul class="am-navbar-nav am-cf">
 						<li>
@@ -96,7 +95,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="shangcheng/index.html">
+							<a href="goods/index.html">
 								<span class="iconfont icon-shangcheng"></span>
 								<span class="am-navbar-label">商城</span>
 							</a>
@@ -133,7 +132,7 @@
 					product: []
 				}
 			});
-
+			
 			$(function() {
 				/* TODO 获取 Banner 数据 */
 				$.getJSON('js/data/banner.json', function(data) {
@@ -148,7 +147,7 @@
 						});
 					})
 				}).fail(function(){
-					alert('服务器内部错误')
+					$.DialogFx.alert({content: '服务器内容错误'})
 				})
 
 				var $footerLazy = $('#xc-footer-lazy');
@@ -179,7 +178,7 @@
 						$('#xc-footer-lazy').html('没有数据了')
 					}
 				}).fail(function() {
-					alert('服务器内部错误')
+					$.DialogFx.alert({content: '服务器内容错误'})
 				})
 			}
 			

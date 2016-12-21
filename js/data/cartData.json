@@ -1,0 +1,21 @@
+[
+	{
+		"goodsId": "关联商品ID",
+		"price": "139.00",
+		"type": "goods",
+		"img": "../images/goods-0.jpg",
+		"classify": "优选",
+		"title": "精品长柄牛奶草莓精品长柄牛奶草莓",
+		"standard":"200克*2袋",
+		"number": "1"
+	}, {
+		"goodsId": "关联商品ID",
+		"price": "89.99",
+		"type": "goods",
+		"img": "../images/goods-1.jpg",
+		"classify": "优选",
+		"title": "精品长柄牛奶草莓精品长柄牛奶草莓",
+		"standard":"200克*2袋",
+		"number": "2"
+	}
+]

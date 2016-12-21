@@ -6,7 +6,7 @@
     z-index: 1000;
     color: @c-txt;
     background-color: @c-bg-l;
-    border-bottom: 1px solid @c-hr;
+    border-bottom: @hr;
     &.xc-header-opacity{
         color: @c-bg-l;
         border: none;
@@ -21,12 +21,18 @@
         line-height: @header-height - 1px;
     }
     a{
+        display: inline-block;
+        width: 25px;
         color: @c-txt;
     }
-    i{
-        &.xc-header-gouwuche{
-            font-size: 3.5rem;
+    .am-header-left {
+        a{
+            text-align: left;
         }
-        
+    }
+    .am-header-right {
+        a{
+            text-align: right;
+        }
     }
 }

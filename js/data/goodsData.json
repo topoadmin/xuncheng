@@ -1,0 +1,20 @@
+{
+	"banner": [
+		"../images/goods-0.jpg",
+		"../images/goods-1.jpg",
+		"../images/goods-2.jpg",
+		"../images/goods-3.jpg",
+		"../images/goods-4.jpg",
+		"../images/goods-5.jpg"
+	],
+	"title": "喜迎春节特价海鲜大礼包",
+	"price": "120.00",
+	"merchant": "每日美鲜海鲜水果超市",
+	"video": {
+		"src": "../video.mp4",
+		"img": "../video.png"
+	},
+	"explain": [
+		"../images/goods-item.jpg"
+	]
+}
