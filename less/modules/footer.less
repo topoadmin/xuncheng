@@ -29,6 +29,19 @@
             }
         }
     }
+    .@{xc}btn {
+        width: 100%;
+        border: 0;
+        height: 100%;
+        line-height: @footer-height;
+        text-align: center;
+        color: @c-bg-l;
+        background: @btn-color;
+        &[disabled] {
+            background: @c-btn-db;
+        }
+    }
+    
     &.@{footer}-comment {
         p {
             text-align: center;
@@ -75,19 +88,14 @@
                 display: inline;
                 line-height: @footer-height;
                 color: @price-colo;
-                font-size: 18px;
+                font-size: 1.8rem;
                 .title {
                     color: @c-txt;
                 }
             }
-            .xc-btn{
+            .@{xc}btn{
                 float: right;
                 width: 120px;
-                height: 100%;
-                line-height: @footer-height;
-                text-align: center;
-                color: @c-bg-l;
-                background: @btn-color;
             }
         }
     }

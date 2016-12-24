@@ -1,0 +1,237 @@
+// 用户
+.@{xc}user {
+    .@{xc}user-header {
+        height: 135px;
+        position: relative;
+        background: url("../images/user/user-header-bg.jpg") center no-repeat;
+        background-size: cover;
+        .@{xc}user-header-img {
+            position: absolute;
+            top: 31px;
+            left: 37px;
+            width: 73px;
+            height: 73px;
+            line-height: 45px;
+            text-align: center;
+            border: 6px solid rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            img {
+                margin: 0 auto;
+                width: 61px;
+            }
+        }
+        .@{xc}user-header-btn {
+            position: absolute;
+            width: 87px;
+            height: 29px;
+            top: 53px;
+            left: 125px;
+            border: @hr;
+            border-radius: 8px;
+            color: @c-bg-l;
+            text-align: center;
+            .am-btn {
+                background-color: transparent;
+                padding: 0;
+                font-size: 14px;
+            }
+        }
+    }
+}
+// 用户功能列表
+.@{xc}list-box {
+    margin-top: 10px;
+    .am-list {
+        margin-bottom: 0;
+        li {
+            a {
+                color: @c-txt;
+                padding: 0 0 0 35px;
+                height: 48px;
+                line-height: 48px;
+                max-width: 280px;
+                word-wrap: normal;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                &.no-icon {
+                    padding-left: 10px;
+                }
+                i {
+                    position: absolute;
+                    font-size: 22px;
+                    width: 22px;
+                    &.xc-list-icon-left {
+                        left: 10px;
+                    }
+                    &.xc-list-icon-right {
+                        right: 10px;
+                        color: @c-hr;
+                    }
+                }
+                img {
+                    position: absolute;
+                    font-size: 20px;
+                    width: 22px;
+                    height: 22px;
+                    top: 13px;
+                    &.xc-list-icon-left {
+                        left: 10px;
+                    }
+                    &.xc-list-icon-right {
+                        right: 10px;
+                        color: @c-hr;
+                    }
+                }
+                .price {
+                    position: absolute;
+                    top: 0;
+                    right: 40px;
+                    color: @price-colo;
+                    font-size: 1.6rem;
+                    .@{xc}price {
+                        font-size: 1.6rem;
+                    }
+                }
+            }
+        }
+    }
+    .xc-list-br {
+        height: 10px;
+        background-color: transparent;
+    }
+}
+// 登录
+.@{xc}login{
+    margin-top: 104px;
+    text-align: center;
+    .title {
+        font-size: 18px;   
+        height: 24px;
+        color: @c-txt; 
+        position: relative;
+        display: inline-block;
+        
+        &:before, &:after{
+            content: " ";
+            position: absolute;
+            width: 70px;
+            top: 13px;
+            border-top: @hr;
+            border-width: 1px;
+        }
+        &:before {
+            left: -82px;
+        }
+        &:after {
+            right: -82px;
+        }
+    }
+    .@{xc}third-party{
+        margin-top: 50%;
+        img {
+            width: 49px;
+            margin-right: 48px;
+        }
+        img:last-child {
+            margin-right: 0;
+        }
+    }
+}
+
+// 地址选择
+.@{xc}address {
+    position: relative;
+    margin-top: 10px;
+    border-bottom: 1px solid @c-hr;
+    &>a{
+        padding: 12px 30px 13px 10px;
+        display: block;
+        .address-title,
+        .address-phone {
+            font-size: 1.6rem;
+            color: @txt-color;
+        }
+        .address-phone {
+            position: absolute;
+            top: 10px;
+            right: 30px;
+        }
+        .address-content {
+            font-size: 1.5rem;
+            color: @c-txt;
+        }
+        i.address-icon-you {
+            position: absolute;
+            top: 50%;
+            height: 60px;
+            line-height: 60px;
+            margin-top: -30px;
+            right: 10px;
+            color: @c-hr;
+        }
+    }
+    &.@{xc}address-list {
+        &>a{
+          i.address-icon-you {
+                line-height: 40px;
+            }  
+        }
+        .address-setting {
+            height: 35px;
+            border-top: 1px solid @c-hr;
+            padding: 0 10px;
+            line-height: 30px;
+            .address-default, .address-checkbox {
+                width: 50%;
+                float: left;
+            }
+            .address-default {
+                height: 30px;
+                img {
+                    width: 20px;
+                    height: 20px; 
+                }
+                span {
+                    color: @c-input;
+                    font-size: 1rem;
+                }
+            }
+            .address-checkbox {
+                text-align: right;
+                a{
+                    display: inline-block;
+                    padding: 0 16px;
+                    border: 1px solid @c-hr;
+                    border-radius: 5px;
+                    line-height: 20px;
+                    height: 20px;
+                    margin: 0 10px 0 0;
+                    font-size: 1rem;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}
+
+.@{xc}address-edit {
+    margin-top: 10px;
+    form {
+        border-bottom: 1px solid @c-hr;
+        padding: 0 10px;
+        input {
+            display: block;
+            width: 100%;
+            height: 46px;
+            border: 0;
+            border-bottom: 1px solid @c-hr;
+            color: @txt-color;
+            font-size: 1.5rem;
+            &:last-child {
+                border: 0;
+            }
+        }
+    }
+}
+

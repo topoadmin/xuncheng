@@ -1,0 +1,22 @@
+[
+	{
+		"id": "address-0",
+		"name": "淡淡的真",
+		"prov": "北京",
+		"city": "北京市",
+		"district": "海淀区",
+		"info": "知春路",
+		"phone": "13701378834",
+		"check": true
+	},
+	{
+		"id": "address-1",
+		"name": "淡淡的真222",
+		"prov": "北京",
+		"city": "北京市",
+		"district": "海淀区",
+		"info": "知春路XX街道222",
+		"phone": "13701378834",
+		"check": false
+	}
+]

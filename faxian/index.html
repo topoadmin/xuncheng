@@ -6,7 +6,7 @@
 		<title>寻城</title>
 		<meta id="meta-keywords" name="keywords" content="寻城">
 		<meta id="meta-description" name="description" content="寻城">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 		<meta name="renderer" content="webkit">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
 		<meta name="apple-mobile-web-app-title" content="寻城">
@@ -35,7 +35,7 @@
 				<div class="xc-home-product xc-faxian-product">
 					<ul>
 						<li v-for="data in faxianData">
-							<a href="#">
+							<a :href="'item.html?id='+data.id">
 								<div class="xc-home-product-tip">
 									<span :class="['xc-'+ data.type]">{{data.tip}}</span>
 								</div>

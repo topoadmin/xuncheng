@@ -6,7 +6,7 @@
 		<title>寻城</title>
 		<meta id="meta-keywords" name="keywords" content="寻城">
 		<meta id="meta-description" name="description" content="寻城">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 		<meta name="renderer" content="webkit">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
 		<meta name="apple-mobile-web-app-title" content="寻城">
@@ -20,7 +20,7 @@
 		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_t6ujvnem02gzm2t9.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_ba6ap3y914r96bt9.css" />
 		<link rel="stylesheet" type="text/css" href="../css/main.css" />
 		
 	</head>
@@ -35,7 +35,7 @@
 		      	</div>
 				<span class="am-header-title">购物车</span>
 				<div class="am-header-right am-header-nav">
-		          	<a href="javascript:$.xuncheng.back();">
+		          	<a href="javascript:;" @click="edit">
 		            	<i class="am-header-icon iconfont icon-bianji"></i>
 		          	</a>
 		      	</div>
@@ -47,7 +47,6 @@
 						<div class="xc-cart-left" @click="check(index)">
 							<img v-if="cData.check" src="../images/icon/icon-check-2.png"/>
 							<img v-else src="../images/icon/icon-check-0.png"/>
-							<input type="checkbox" class="cart-data-check am-hide"/>
 						</div>
 						<div class="xc-cart-right">
 							<div class="xc-cart-right-info">
@@ -82,9 +81,12 @@
 						<span class="xc-price">¥</span>
 						<span class="price-txt">{{ total }}</span>
 					</p>
-					<div class="xc-btn" @click="submit">
+					<button class="xc-btn" @click="remove" v-if="editCart" :disabled="total==0 ? true : false">
+						<i class="iconfont icon-shanchu icon-xl"></i>
+					</button>
+					<button class="xc-btn" @click="submit" v-else :disabled="total==0 ? true : false">
 						下单
-					</div>
+					</button>
 				</div>
 			</footer>
 			
@@ -101,7 +103,8 @@
 				data: {
 					checkAllSelected: false,
 					total: 0,
-					cartData: []
+					cartData: [],
+					editCart: false
 				},
 				methods: {
 					minus: function(index) {
@@ -149,9 +152,14 @@
 						vueModel.total = total
 					},
 					submit: function() { // 提交订单
-						if($.xuncheng.isLogin()){
-							$.DialogFx.alert({content: '现在可以下单了'})
-						}
+						window.location.href = 'order.html'
+						/*if($.xuncheng.isLogin()){
+							console.log('您已经登录了')
+						}*/
+					},
+					edit: function() { // 编辑购物车
+						var self = this;
+						self.editCart = !self.editCart;
 					}
 				}
 			});
@@ -159,7 +167,6 @@
 			;
 			(function() {
 				$.getJSON('../js/data/cartData.json', function(data) {
-					
 					data.forEach(function(item){
 						item.check = false;
 						vueModel.cartData.push(item)

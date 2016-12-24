@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" class="js cssanimations">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>寻城</title>
+		<meta id="meta-keywords" name="keywords" content="寻城">
+		<meta id="meta-description" name="description" content="寻城">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+		<meta name="apple-mobile-web-app-title" content="寻城">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no, email=no" />
+		<meta name="robots" content="index,follow" />
+		<meta http-equiv="Cache-Control" content="no-siteapp">
+		<link rel="icon" type="image/png" href="../assets/images/favicon.png">
+
+		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_njtj5mbb8822csor.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.address.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/main.css" />
+	</head>
+
+	<body class="xc-bg">
+		<div id="xc-app" class="xc-app xc-header-fixed" v-cloak>
+			<header class="am-header xc-header">
+				<div class="am-header-left am-header-nav">
+					<a href="javascript:$.xuncheng.back();">
+						<i class="am-header-icon iconfont icon-zuo"></i>
+					</a>
+				</div>
+				<span class="am-header-title" v-if="address.id">编辑地址</span>
+				<span class="am-header-title" v-else>新建地址</span>
+			</header>
+
+			<div class="am-g">
+				<div class="xc-address-edit">
+					<form class="xc-bg-l" onsubmit="return false;">
+						<input type="text" placeholder="收货人" required v-model="address.name">
+						<input type="text" placeholder="手机号码" required pattern="^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$" v-model="address.phone">
+						<input type="text" readonly id="address-input" required placeholder="所在地区" :value="address.prov+address.city+address.district" />
+						<input type="text" placeholder="详细地址" required v-model="address.info">
+					</form>
+				</div>
+			</div>
+
+			<footer class="xc-footer">
+				<button class="xc-btn" @click="submit">保存</button>
+			</footer>
+
+		</div>
+
+		<script src="../assets/js/vue.min.js"></script>
+		<script src="../assets/js/fastclick.min.js"></script>
+		<script src="../assets/js/jquery.min.js"></script>
+		<script src="../assets/js/amazeui.min.js"></script>
+		<script src="../js/xuncheng.js"></script>
+		
+		<!-- 地址选择窗口 -->
+		<script src="../assets/js/iscroll.js"></script>
+		<script src="../assets/js/address.min.js"></script>
+
+		<script type="text/javascript">
+			window.vueModel = new Vue({
+				el: "#xc-app",
+				data: {
+					address: {
+						id: '',
+						name: '',
+						phone: '',
+						prov: '',
+						city: '',
+						district: '',
+						info: ''
+					},
+					addressId: false,
+				},
+				methods: {
+					submit: function() {
+						$('form').submit()
+					}
+				}
+			});
+			(function() {
+				vueModel.addressId = $.xuncheng.getUrlParam('addressId');
+				if(typeof vueModel.addressId == 'string') { // 判断是编辑地址还是新增地址
+					$.get('../js/data/address.json', function(data) {
+						data.forEach(function(item) {
+							if(vueModel.addressId == item.id) {
+								vueModel.address = item;
+								addressInit()
+							}
+						})
+					})
+				}else{
+					addressInit()
+				}
+			}());
+
+			$(function() {
+				document.addEventListener('touchmove', function(e) {
+					e.preventDefault();
+				}, false);
+				$('form').validator({
+					submit: function(e, validity) {
+						var formValidity = this.isFormValid();
+						if(formValidity) { // 验证通过
+							$.DialogFx.alert({content: '现在可以提交了'})
+							console.log(JSON.stringify(vueModel.$data))
+						}
+					}
+				});
+			})
+			
+			function addressInit() {
+				$("#address-input").address({
+					prov: vueModel.address.prov,
+					city: vueModel.address.city,
+					district: vueModel.address.district,
+					scrollToCenter: true,
+					selectEnd: function(json) {
+						for(var k in json) {
+							vueModel.address[k] = json[k]
+						}
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

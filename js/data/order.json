@@ -1,0 +1,44 @@
+{
+	"id": "order-0",
+	"total": "72.00",
+	"freight": "20.00",
+	"goodsData": [{
+		"id": "goods-0",
+		"img": "../images/goods-0.jpg",
+		"type": "goods",
+		"classify": "优选",
+		"title": "精品长柄牛奶草莓精品长柄牛奶草莓",
+		"standard":"200克*2袋",
+		"price": "38.00",
+		"size": 1
+	},{
+		"id": "goods-0",
+		"img": "../images/goods-1.jpg",
+		"type": "goods",
+		"classify": "优选",
+		"title": "精品长柄牛奶草莓精品长柄牛奶草莓",
+		"standard":"200克*2袋",
+		"price": "38.00",
+		"size": 1
+	}],
+	"address": {
+		"id": "address-0",
+		"name": "淡淡的真",
+		"prov": "北京",
+		"city": "北京市",
+		"district": "海淀区",
+		"info": "科贸大厦XX",
+		"phone": "13701378834"
+	},
+	"coupon": {
+		"id": "conpon-0",
+		"price": "100",
+		"time": "2016-12-24",
+		"title": "满300减100",
+		"ide": "全场通用"
+	},
+	"invoice": {
+		"info": "寻城丹东",
+		"classify": "个人"
+	}
+}

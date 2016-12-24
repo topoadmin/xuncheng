@@ -271,7 +271,7 @@ $(function() {
 
 	// 解决移动端遮盖输入框
 	function mobileInputCover($elm) {
-		if($.getSystem() != 'PC') { // 解决移动端遮盖输入框事件
+		if($.xuncheng.getSystem() != 'PC') { // 解决移动端遮盖输入框事件
 			$(window).one('resize', function() {
 				$elm.scrollIntoView()
 			})

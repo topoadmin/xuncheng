@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" class="js cssanimations">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>寻城</title>
+		<meta id="meta-keywords" name="keywords" content="寻城">
+		<meta id="meta-description" name="description" content="寻城">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+		<meta name="apple-mobile-web-app-title" content="寻城">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no, email=no" />
+		<meta name="robots" content="index,follow" />
+		<meta http-equiv="Cache-Control" content="no-siteapp">
+		<link rel="icon" type="image/png" href="../assets/images/favicon.png">
+
+		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_njtj5mbb8822csor.css" />
+		<link rel="stylesheet" type="text/css" href="../css/main.css" />
+
+	</head>
+
+	<body class="xc-bg">
+		<div id="xc-app" class="xc-app xc-header-fixed" v-cloak>
+			<header class="am-header xc-header">
+				<div class="am-header-left am-header-nav">
+					<a href="javascript:$.xuncheng.back();">
+						<i class="am-header-icon iconfont icon-zuo"></i>
+					</a>
+				</div>
+				<span class="am-header-title">编辑发票信息</span>
+			</header>
+
+			<div class="am-g xc-invoice-box">
+				<ul class="am-list xc-bg-l">
+					<li class="title">
+						发票抬头
+					</li>
+					<li class="radio">
+						<div @click="check(1)">
+							<img v-if="role == 1" src="../images/icon/icon-check-2.png"/>
+							<img v-else src="../images/icon/icon-check-0.png"/>
+							<span>个人</span>
+						</div>
+						<div @click="check(2)">
+							<img v-if="role == 2" src="../images/icon/icon-check-2.png"/>
+							<img v-else src="../images/icon/icon-check-0.png"/>
+							<span>单位</span>
+						</div>
+					</li>
+					<li class="info">
+						<input type="text" placeholder="填写抬头名称" v-model="info" maxlength="18" />
+					</li>
+				</ul>
+			</div>
+			
+			<div class="am-g xc-invoice-info">
+				<ul class="am-list xc-bg-l">
+					<li class="title">
+						发票内容
+					</li>
+					<li class="classify">
+						食品
+					</li>
+				</ul>
+			</div>
+
+			<footer class="xc-footer xc-footer-cart">
+				<a href="javascript:;" @click="submit" class="xc-btn" :disabled="info? false:true">
+					确定
+				</a>
+			</footer>
+
+		</div>
+
+		<script src="../assets/js/vue.min.js"></script>
+		<script src="../assets/js/fastclick.min.js"></script>
+		<script src="../assets/js/jquery.min.js"></script>
+		<script src="../assets/js/amazeui.min.js"></script>
+		<script src="../js/xuncheng.js"></script>
+		<script type="text/javascript">
+			window.vueModel = new Vue({
+				el: "#xc-app",
+				data: {
+					orderId: false,
+					info: '',
+					role: 1
+				},
+				methods: {
+					check: function(index) {
+						vueModel.role = index;
+					},
+					submit: function() {
+						if(vueModel.orderId){
+							window.location.href = 'order.html?orderId='+vueModel.orderId;
+						}else {
+							$.DialogFx.alert({content: '未找到的订单ID'})
+						}
+					}
+				}
+			});;
+			(function() {
+				var orderId = $.xuncheng.getUrlParam('orderId');
+				if(typeof orderId == 'string') {
+					vueModel.orderId = orderId;
+				}
+			}());
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" class="js cssanimations">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>寻城</title>
+		<meta id="meta-keywords" name="keywords" content="寻城">
+		<meta id="meta-description" name="description" content="寻城">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+		<meta name="apple-mobile-web-app-title" content="寻城">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no, email=no" />
+		<meta name="robots" content="index,follow" />
+		<meta http-equiv="Cache-Control" content="no-siteapp">
+		<link rel="icon" type="image/png" href="../assets/images/favicon.png">
+
+		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_njtj5mbb8822csor.css" />
+		<link rel="stylesheet" type="text/css" href="../css/main.css" />
+
+	</head>
+
+	<body class="xc-bg">
+		<div id="xc-app" class="xc-app xc-header-fixed" v-cloak>
+			<header class="am-header xc-header">
+				<div class="am-header-left am-header-nav">
+					<a href="javascript:$.xuncheng.back();">
+						<i class="am-header-icon iconfont icon-zuo"></i>
+					</a>
+				</div>
+				<span class="am-header-title">我的地址</span>
+			</header>
+
+			<div class="am-g">
+				<div class="xc-address xc-address-list xc-bg-l" v-for="(index, address) in addressData">
+					<a href="javascript:;" @click="selectAddress(index)">
+						<p class="address-title">{{ address.name }}</p>
+						<p class="address-phone">{{ address.phone }}</p>
+						<p class="address-content">{{ address.prov + ' '+ address.city + ' '+ address.district + ' '+ address.info }}</p>
+						<i class="iconfont icon-you icon-lg address-icon-you"></i>
+					</a>
+					<div class="address-setting">
+						<div class="address-default" @click="check(index)">
+							<img v-if="address.check" src="../images/icon/icon-check-2.png" />
+							<img v-else src="../images/icon/icon-check-0.png" />
+							<span>设为默认地址</span>
+						</div>
+						<div class="address-checkbox">
+							<a :href="'address-edit.html?addressId='+address.id">
+								编辑
+							</a>
+							<a href="javascript:;" @click="remove(index)">
+								删除
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<footer class="xc-footer xc-footer-cart">
+				<a href="address-edit.html" class="xc-btn">
+					新建地址
+				</a>
+			</footer>
+
+		</div>
+
+		<script src="../assets/js/vue.min.js"></script>
+		<script src="../assets/js/fastclick.min.js"></script>
+		<script src="../assets/js/jquery.min.js"></script>
+		<script src="../assets/js/amazeui.min.js"></script>
+		<script src="../js/xuncheng.js"></script>
+		<script type="text/javascript">
+			window.vueModel = new Vue({
+				el: "#xc-app",
+				data: {
+					orderId: false,
+					addressData: [],
+					checkAddressId: false
+				},
+				watch: {
+					checkAddressId: function(){
+						// 修改默认地址
+					}
+				},
+				methods: {
+					selectAddress: function(index) { // 选择
+						if(vueModel.orderId) {
+							$.DialogFx.alert({
+								content: '获取收货地址ID==' + vueModel.addressData[index].id,
+								end: function() {
+									window.location.href = '../component/order.html?orderId='+vueModel.orderId
+								}
+							})
+						}
+					},
+					check: function(index) {
+						vueModel.addressData.forEach(function(item, i) {
+							item.check = false;
+							if(index == i) {
+								item.check = !item.check;
+								vueModel.checkAddressId = item.id;
+							}
+						});
+					},
+					remove: function(index) {
+						$.DialogFx.confirm({
+							content: '确定删除这个收货地址吗？',
+							confirm: function() {
+								vueModel.addressData.splice(index, 1)
+							}
+						});
+					}
+				}
+			});
+			;(function(){
+				var orderId = $.xuncheng.getUrlParam('orderId');
+				if(typeof orderId == 'string'){
+					vueModel.orderId = orderId;
+				}
+				$.get('../js/data/address.json', function(data){
+					vueModel.addressData = data;
+				})
+			}());
+		</script>
+	</body>
+
+</html>

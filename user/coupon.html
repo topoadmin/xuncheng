@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" class="js cssanimations">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>寻城</title>
+		<meta id="meta-keywords" name="keywords" content="寻城">
+		<meta id="meta-description" name="description" content="寻城">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<meta name="renderer" content="webkit">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+		<meta name="apple-mobile-web-app-title" content="寻城">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no, email=no" />
+		<meta name="robots" content="index,follow" />
+		<meta http-equiv="Cache-Control" content="no-siteapp">
+		<link rel="icon" type="image/png" href="../assets/images/favicon.png">
+
+		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_njtj5mbb8822csor.css" />
+		<link rel="stylesheet" type="text/css" href="../css/main.css" />
+
+	</head>
+
+	<body class="xc-bg">
+		<div id="xc-app" class="xc-app xc-header-fixed" v-cloak>
+			<header class="am-header xc-header">
+				<div class="am-header-left am-header-nav">
+					<a href="javascript:$.xuncheng.back();">
+						<i class="am-header-icon iconfont icon-zuo"></i>
+					</a>
+				</div>
+				<span class="am-header-title">我的优惠卷</span>
+			</header>
+
+			<div class="am-g">
+				<div class="xc-coupon-box">
+					<ul>
+						<li v-for="(index, coupon) in couponData" @click="check(index)">
+							<img class="coupon-bg" src="../images/icon/icon-coupon.png" />
+							<p class="price">
+								<span class="xc-price">¥</span>
+								<span class="price-txt">{{ coupon.price }}</span>
+								<span class="coupon-ide">{{ coupon.ide }}</span>
+							</p>
+							<div class="coupon-info">
+								<div>
+									<p class="coupon-title am-text-truncate">{{ coupon.title }}</p>
+									<p class="coupon-time am-text-truncate">发券时间:{{ coupon.time }}</p>
+									<div class="coupon-check" v-if="orderId">
+										<img v-if="coupon.check" src="../images/icon/icon-check-2.png" />
+										<img v-else src="../images/icon/icon-check-0.png" />
+										<input type="checkbox" class="cart-data-check am-hide" />
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<footer class="xc-footer" v-if="orderId">
+				<button class="xc-btn" @click="submit" :disabled="checkCouponId ? false : true">
+					确定
+				</button>
+			</footer>
+
+		</div>
+
+		<script src="../assets/js/vue.min.js"></script>
+		<script src="../assets/js/fastclick.min.js"></script>
+		<script src="../assets/js/jquery.min.js"></script>
+		<script src="../assets/js/amazeui.min.js"></script>
+		<script src="../js/xuncheng.js"></script>
+		<script type="text/javascript">
+			window.vueModel = new Vue({
+				el: "#xc-app",
+				data: {
+					orderId: false,
+					couponData: [],
+					checkCouponId: false
+				},
+				methods: {
+					check: function(index) { // 选择商品
+						if(vueModel.orderId) {
+							vueModel.couponData.forEach(function(item, i) {
+								item.check = false;
+								if(index == i) {
+									item.check = !item.check;
+									vueModel.checkCouponId = item.id;
+								}
+							});
+						}
+					},
+					submit: function() {
+						if(vueModel.orderId) {
+							$.DialogFx.alert({
+								content: '已选择优惠券ID==' + vueModel.checkCouponId,
+								end: function(){
+									window.location.href = '../component/order.html?order=' + vueModel.orderId;
+								}
+							})
+						}
+					}
+				}
+			});
+			(function() {
+				var orderId = $.xuncheng.getUrlParam('orderId');
+				if(typeof orderId == 'string'){
+					vueModel.orderId = orderId;
+				}
+				
+				$.getJSON('../js/data/conpon.json', function(data) {
+					data.forEach(function(item) {
+						item.check = false;
+						vueModel.couponData.push(item)
+					})
+				}).fail(function() {
+					$.DialogFx.alert({
+						content: '服务器内容错误'
+					})
+				})
+			}());
+		</script>
+	</body>
+
+</html>
