@@ -19,8 +19,7 @@
 
 		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
-		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_njtj5mbb8822csor.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
 		<link rel="stylesheet" type="text/css" href="../css/main.css" />
 
 	</head>
@@ -119,9 +118,7 @@
 						vueModel.couponData.push(item)
 					})
 				}).fail(function() {
-					$.DialogFx.alert({
-						content: '服务器内容错误'
-					})
+					$.DialogFx.alertError()
 				})
 			}());
 		</script>

@@ -19,7 +19,7 @@
 		<link rel="stylesheet" type="text/css" href="assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="assets/css/animate.css" />
 		<link rel="stylesheet" type="text/css" href="assets/css/swiper-3.4.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_176uasek8phz1tt9.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
 		<link rel="stylesheet" type="text/css" href="css/main.css" />
 	</head>
 
@@ -31,29 +31,30 @@
 				</span>
 			</header>
 			
-			<!-- 轮播 -->
+			<!-- banner -->
 			<div class="xc-banner" id="home-banner">
 				<div class="swiper-container">
 					<div class="swiper-wrapper">
-						<div class="swiper-slide" v-for="bData in banner">
-							<a :href=" bData.type + '/item.html?id='+bData.id">
-								<img class="swiper-lazy" src="images/bg/home-bg.jpg" :data-src="bData.img"  />
+						<div class="swiper-slide" v-for="banner in bannerList">
+							<a :href="banner.blink">
+								<img class="swiper-lazy" src="images/bg/home-bg.jpg" :data-src="banner.img"  />
 							</a>
 						</div>
 					</div>
 					<div class="swiper-pagination"></div>
 				</div>
 			</div>
-
+			
+			<!-- 内容数据 -->
 			<div class="am-g xc-g">
 				<div class="xc-home-product">
 					<ul>
-						<li v-for="data in product">
-							<a :href=" data.type + '/item.html?id='+data.id">	
+						<li v-for="data in indexList">
+							<a :href="ilink">
 								<div class="xc-home-product-tip">
-									<span :class="['xc-'+ data.type]">{{data.tip}}</span>
+									<span :class="['xc-'+ data.type]">{{data.itype}}</span>
 								</div>
-								<img class="lazy am-img-responsive" src="images/bg/home-bg.jpg"  :data-original="data.img" />
+								<img class="lazy am-img-responsive" src="images/bg/home-bg.jpg"  :data-original="data.ipic" />
 
 								<div class="xc-home-product-content" v-if="data.type == 'goods'">
 									<p class="title">
@@ -128,15 +129,19 @@
 			window.vueModel = new Vue({
 				el: "#xc-app",
 				data: {
-					banner: [],
-					product: []
+					bannerList: [],
+					indexList: []
 				}
 			});
 			
 			$(function() {
 				/* TODO 获取 Banner 数据 */
-				$.getJSON('js/data/banner.json', function(data) {
-					vueModel.banner = data;
+				$.getJSON('http://m.xunchengweidao.com/mbl', function(data) {
+					if(data.resultCode != 10000){
+						$.DialogFx.alert(data.showMessage || '广告数据请求失败')
+						return false;
+					}
+					vueModel.bannerList = data.bannerList;
 					vueModel.$nextTick(function() {
 						new Swiper('#home-banner>.swiper-container', {
 							pagination: '.swiper-pagination',
@@ -147,11 +152,10 @@
 						});
 					})
 				}).fail(function(){
-					$.DialogFx.alert({content: '服务器内容错误'})
+					$.DialogFx.alert('服务器内部错误')
 				})
 
 				var $footerLazy = $('#xc-footer-lazy');
-
 				lazyProduct(function() { // 初始加载一次数据，然后监控滚动加载事件
 					$footerLazy.on('lazy.open', function() {
 						lazyProduct(function() {
@@ -163,10 +167,14 @@
 
 			function lazyProduct(fn) {
 				/* TODO 获取 产品 数据 */
-				$.getJSON('js/data/lazyProduct.json', function(data) {
-					if(data.length){
-						data.forEach(function(value) {
-							vueModel.product.push(value)
+				$.getJSON('http://m.xunchengweidao.com/mil', function(data) {
+					if(data.resultCode != 10000){
+						$.DialogFx.alert(data.showMessage || '首页内容请求失败')
+						return false;
+					}
+					if(data.indexList.length){
+						data.indexList.forEach(function(item) {
+							vueModel.indexList.push(item)
 						})
 						vueModel.$nextTick(function(){
 							$('img.lazy').lazyload();
@@ -178,7 +186,7 @@
 						$('#xc-footer-lazy').html('没有数据了')
 					}
 				}).fail(function() {
-					$.DialogFx.alert({content: '服务器内容错误'})
+					$.DialogFx.alert('服务器内部错误')
 				})
 			}
 			

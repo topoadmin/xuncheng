@@ -19,7 +19,7 @@
 		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_rab0dzlliy4rhpvi.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
 		<link rel="stylesheet" type="text/css" href="../css/main.css" />
 	</head>
 
@@ -33,7 +33,7 @@
 				</div>
 				<span class="am-header-title">专题详情</span>
 				<div class="am-header-right am-header-nav">
-					<a href="javascript:$.xuncheng.share();">
+					<a href="javascript:;" @click="share">
 						<i class="am-header-icon iconfont icon-fenxiang icon-lg"></i>
 					</a>
 				</div>
@@ -42,17 +42,26 @@
 			<div class="am-g xc-faxian-item am-margin-0">
 				<img class="am-img-responsive lazy" data-original="../images/banner-0.jpg" src="../images/bg/home-bg.jpg" />
 				<div class="xc-faxian-item-user">
-					<img src="../assets/images/favicon.png" />
-					<span class="title">环球行者</span>
-					<span class="time">2016-12-21</span>
+					<img :src="featureDetail.fauthorpic" />
+					<span class="title">{{featureDetail.fauthorname}}</span>
+					<span class="time">{{featureDetail.fdate}}</span>
 				</div>
 			</div>
 			
 			<div class="am-g xc-faxian-item">
+				<div class="xc-video-box" id="xc-video-box">
+					<div class="xc-video-play">
+						<i class="am-icon-play xc-video-play-icon"></i>
+						<img class="lazy" src="../images/bg/480.jpg" />
+					</div>
+
+					<video class="xc-video" :src="featureDetail.pvideo" controls="controls" loop="loop"></video>
+				</div>
+				
 				<div class="xc-faxian-item-info">
-					<p class="title">一座桥的战争记忆</p>
-					<p class="content">鸭绿江断桥位于中国辽宁省丹东市振兴区江岸路鸭绿江畔，是原鸭绿江大桥被炸毁后的残余部分。鸭绿江断桥为鸭绿江上诸多桥中第一座桥，1909年5月动工，1911年10月竣工。由当时日本朝鲜总督府铁道局所建。2006年被国务院批准为全国第六批重点文物保护单位，也是丹东市区唯一一个国家级保护单位。</p>
-					<img class="am-img-responsive" src="../images/faxian-1.jpg" />
+					<p class="title">{{featureDetail.fname}}</p>
+					<p class="content">{{featureDetail.fcontent}}</p>
+					<img v-for="ftpics in featureDetail.ftpicList" class="am-img-responsive lazy" :data-original="ftpics" src="../images/bg/750.jpg" />
 				</div>
 			</div>
 
@@ -88,7 +97,7 @@
 					</ul>
 				</div>
 			</div>
-
+			
 			<div class="am-g">
 
 				<p class="am-padding-vertical-xs">用户评论({{commentData.length}})条</p>
@@ -123,7 +132,7 @@
 			</div>
 
 			<footer class="xc-footer xc-footer-faxian">
-				<div>
+				<div @click="share">
 					<i class="iconfont icon-fenxiang1"></i> 分享
 				</div>
 				<div>
@@ -145,29 +154,28 @@
 				el: "#xc-app",
 				data: {
 					queryId: $.xuncheng.getUrlParam('id'),
-					goodsData: {},
+					featureDetail: {},
 					commentData: []
+				},
+				methods: {
+					share: function(){
+						$.DialogFx.msg('分享功能待开发')
+					}
 				}
 			});
-
+			
 			;
 			(function() {
-				$.getJSON('../js/data/goodsData.json', function(data) {
-					vueModel.goodsData = data;
-					vueModel.$nextTick(function() {
-						new Swiper('#goods-banner>.swiper-container', {
-							pagination: '.swiper-pagination',
-							paginationClickable: true,
-							lazyLoading: true,
-							lazyLoadingInPrevNext: true,
-							lazyLoadingInPrevNextAmount: 2
-						});
-						$('img.lazy').lazyload();
-					})
+				$.getJSON('http://m.xunchengweidao.com/mfd', {fid: vueModel.queryId}, function(data) {
+					if(data.resultCode != 10000){
+						$.DialogFx.alertError(data.showMessage || '商品数据请求失败')
+						return false;
+					}
+					data.featureDetail.ftpicList = data.featureDetail.ftpic.split(',');
+					vueModel.featureDetail = data.featureDetail;
+					$('img.lazy').lazyload();
 				}).fail(function() {
-					$.DialogFx.alert({
-						content: '服务器内容错误'
-					})
+					$.DialogFx.alertError()
 				})
 			}());
 
@@ -178,9 +186,7 @@
 						$('.xc-comment-imgs > img').lazyload();
 					})
 				}).fail(function() {
-					$.DialogFx.alert({
-						content: '服务器内容错误'
-					})
+					$.DialogFx.alert('评论服务器内部错误')
 				})
 			})
 		</script>

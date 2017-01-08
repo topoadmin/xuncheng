@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" class="js cssanimations">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>寻城</title>
+		<meta id="meta-keywords" name="keywords" content="寻城">
+		<meta id="meta-description" name="description" content="寻城">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<meta name="renderer" content="webkit">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+		<meta name="apple-mobile-web-app-title" content="寻城">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no, email=no" />
+		<meta name="robots" content="index,follow" />
+		<meta http-equiv="Cache-Control" content="no-siteapp">
+		<link rel="icon" type="image/png" href="../assets/images/favicon.png">
+		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
+		<link rel="stylesheet" type="text/css" href="../css/main.css" />
+	</head>
+
+	<body class="xc-bg">
+		<div id="xc-app" class="xc-app xc-header-fixed" v-cloak>
+			<header class="am-header xc-header xc-bb">
+				<div class="am-header-left am-header-nav">
+					<a href="javascript:$.xuncheng.back();">
+						<i class="am-header-icon iconfont icon-zuo"></i>
+					</a>
+				</div>
+				<span class="am-header-title">
+					修改昵称
+				</span>
+			</header>
+
+			<div class="am-g">
+				<form id="update-name" onsubmit="return false;" autocomplete="off">
+					<div class="xc-list-box update-user-box">
+						<ul class="xc-list">
+							<li>
+								<input class="no-cover" v-model="wx_nickname" minlength="2" maxlength="10" required type="text" name="wx_nickname" placeholder="请输入新昵称（至少 2 个字符）" />
+							</li>
+						</ul>
+					</div>
+
+					<div class="update-footer">
+						<button type="submit">提交</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<script src="../assets/js/vue.min.js"></script>
+		<script src="../assets/js/fastclick.min.js"></script>
+		<script src="../assets/js/jquery.min.js"></script>
+		<script src="../assets/js/amazeui.min.js"></script>
+		<script src="../js/xuncheng.js"></script>
+
+		<script type="text/javascript">
+			window.vueModel = new Vue({
+				el: "#xc-app",
+				data: {
+					uid: $.xuncheng.getUid(),
+					wx_nickname: ''
+				}
+			});
+			
+			(function() {
+				$.getJSON('http://m.xunchengweidao.com/muinfo', {
+					uid: vueModel.uid
+				}, function(data) {
+					if(data.resultCode != 10000) {
+						return false;
+					}
+					vueModel.wx_nickname = data.wx_nickname;
+				}).fail(function(result) {
+					$.DialogFx.alertError(result.responseJSON.showMessage || '用户数据获取失败', 'login');
+				})
+			}());
+			$(function() {
+				$('#update-name').validator({
+					submit: function(e, validity) {
+						if(this.isFormValid()) {
+							$.getJSON('http://m.xunchengweidao.com/muname', {
+								uid: vueModel.uid,
+								wx_nickname: vueModel.wx_nickname
+							}, function(data) {
+								if(data.resultCode != 10000) {
+									return false;
+								}
+								$.DialogFx.alert({
+									content: data.showMessage,
+									end: function() {
+										window.location.href = 'info.html'
+									}
+								})
+								setTimeout(function(){
+									window.location.href = 'info.html'
+								}, 1500);
+							}).fail(function(result) {
+								if($.xuncheng.reLogin(result.responseJSON.resultCode)) {
+									$.DialogFx.alert(result.responseJSON.showMessage || '昵称修改失败');
+								}
+							})
+						}
+					}
+				})
+			})
+		</script>
+
+	</body>
+
+</html>

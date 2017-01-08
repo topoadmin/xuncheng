@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" class="js cssanimations">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>寻城</title>
+		<meta id="meta-keywords" name="keywords" content="寻城">
+		<meta id="meta-description" name="description" content="寻城">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<meta name="renderer" content="webkit">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
+		<meta name="apple-mobile-web-app-title" content="寻城">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no, email=no" />
+		<meta name="robots" content="index,follow" />
+		<meta http-equiv="Cache-Control" content="no-siteapp">
+		<link rel="icon" type="image/png" href="../assets/images/favicon.png">
+		
+		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
+		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
+		<link rel="stylesheet" type="text/css" href="../css/main.css" />
+	</head>
+
+	<body class="xc-bg">
+		<div id="xc-app" class="xc-app xc-header-fixed" v-cloak>
+			<header class="am-header xc-header">
+				<div class="am-header-left am-header-nav">
+					<a href="javascript:$.xuncheng.back();">
+						<i class="am-header-icon iconfont icon-zuo"></i>
+					</a>
+				</div>
+				<span class="am-header-title">我的订单</span>
+			</header>
+
+			<div class="am-g">
+				<div class="xc-order-list">
+					<div id="order-tabs"  class="xc-tabs">
+						<ul class="xc-tabs-nav">
+							<li v-for="(index, item) in tabs" :class="[index == tabsActive ? 'active' : '']" @click="tabsSelect(index)">
+								<a href="javascript:;">
+									{{item}}
+								</a>
+							</li>
+							<span class="xc-tabs-bar"></span>
+						</ul>
+						
+						<div class="xc-tabs-box">
+							<div class="order-daizhifu">
+								<ul>
+									<li class="goods-item">
+										<img src="../images/goods-0.jpg">
+										<p class="goods-item-title">精品长柄牛奶草莓精品长柄牛奶草莓</p>
+										<p class="price">
+											<span class="xc-price">¥</span>
+											<span class="price-txt">38.00</span>
+										</p>
+										<p class="goods-item-size">x 1</p>
+									</li>
+									<li class="goods-item">
+										<img src="../images/goods-1.jpg">
+										<p class="goods-item-title">精品长柄牛奶草莓精品长柄牛奶草莓</p>
+										<p class="price">
+											<span class="xc-price">¥</span>
+											<span class="price-txt">38.00</span>
+										</p>
+										<p class="goods-item-size">x 1</p>
+									</li>
+								</ul>
+								<div class="order-footer">
+									<div class="order-footer-left">
+										<p>
+											<span class="title">实付款：</span>
+											<span class="xc-price">¥</span>
+											<span class="price-txt">72.00</span>
+										</p>
+										<p class="freight">(含运费:¥10.00)</p>
+									</div>
+									<button type="button">去支付</button>
+								</div>
+							</div>
+							
+							<div class="order-daishouhuo">
+								<ul>
+									<li class="goods-item">
+										<img src="../images/goods-0.jpg">
+										<p class="goods-item-title">精品长柄牛奶草莓精品长柄牛奶草莓</p>
+										<p class="price">
+											<span class="xc-price">¥</span>
+											<span class="price-txt">38.00</span>
+										</p>
+										<p class="goods-item-size">x 1</p>
+									</li>
+									<li class="goods-item">
+										<img src="../images/goods-1.jpg">
+										<p class="goods-item-title">精品长柄牛奶草莓精品长柄牛奶草莓</p>
+										<p class="price">
+											<span class="xc-price">¥</span>
+											<span class="price-txt">38.00</span>
+										</p>
+										<p class="goods-item-size">x 1</p>
+									</li>
+								</ul>
+								<div class="order-footer">
+									<div class="order-footer-left">
+										<p>
+											<span class="title">实付款：</span>
+											<span class="xc-price">¥</span>
+											<span class="price-txt">72.00</span>
+										</p>
+										<p class="freight">(含运费:¥10.00)</p>
+									</div>
+									<button type="button">查看物流</button>
+								</div>
+							</div>
+							
+							<div class="order-yiwancheng">
+								<ul>
+									<li class="goods-item">
+										<img src="../images/goods-0.jpg">
+										<p class="goods-item-title">精品长柄牛奶草莓精品长柄牛奶草莓</p>
+										<p class="price">
+											<span class="xc-price">¥</span>
+											<span class="price-txt">38.00</span>
+										</p>
+										<p class="goods-item-size">x 1</p>
+									</li>
+									<li class="goods-item">
+										<img src="../images/goods-1.jpg">
+										<p class="goods-item-title">精品长柄牛奶草莓精品长柄牛奶草莓</p>
+										<p class="price">
+											<span class="xc-price">¥</span>
+											<span class="price-txt">38.00</span>
+										</p>
+										<p class="goods-item-size">x 1</p>
+									</li>
+								</ul>
+								<div class="order-footer">
+									<div class="order-footer-left">
+										<p>
+											<span class="title">实付款：</span>
+											<span class="xc-price">¥</span>
+											<span class="price-txt">72.00</span>
+										</p>
+										<p class="freight">(含运费:¥10.00)</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<script src="../assets/js/vue.min.js"></script>
+		<script src="../assets/js/fastclick.min.js"></script>
+		<script src="../assets/js/jquery.min.js"></script>
+		<script src="../assets/js/amazeui.min.js"></script>
+		<script src="../js/xuncheng.js"></script>
+
+		<script type="text/javascript">
+			window.vueModel = new Vue({
+				el: "#xc-app",
+				data: {
+					tabs: ['待支付', '待收货', '已完成'],
+					tabsActive: 0
+				},
+				methods: {
+					tabsSelect: function(index){
+						vueModel.tabsActive = index;
+						tabsBarPotision();
+					}
+				}
+			});
+			
+			$(function(){
+				tabsBarPotision();
+			})
+			
+			
+			
+			// 对选项卡的bar进行定位
+			function tabsBarPotision() {
+				vueModel.$nextTick(function(){
+					var $tabs = $('#order-tabs');
+					var $tabsBox = $tabs.children('.xc-tabs-box');
+					var $tabsBar = $tabs.find('.xc-tabs-bar');
+					var $tabsLi = $tabs.find('li.active')
+					var $tabsActive = $tabsLi.children('a');
+					$tabsBar.css({
+						width: $tabsActive.width(),
+						left: $tabsActive.position().left
+					})
+					$tabsBox.children('div').eq($tabsLi.index()).addClass('active').siblings().removeClass('active')
+				})
+			}
+			
+		</script>
+	</body>
+
+</html>

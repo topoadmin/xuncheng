@@ -58,6 +58,9 @@
         }
         .@{xc}add-btn, .@{xc}submit-btn {
             color: @c-bg-l;
+            &>a{
+                color: @c-bg-l;
+            }
         }
         .@{xc}add-btn {
             background: @c-btn-add;
@@ -124,5 +127,32 @@
                 }
             }
         }
+    }
+    
+    &.@{footer}-user-info {
+        border: 0;
+        background: transparent;
+        display: flex;
+        height: auto;
+        button {
+            flex: 1;
+            display: block;
+            margin: 0 10px 17px 10px;
+            height: 47px;
+            font-size: 1.7rem;
+            border: none;
+            border-radius: 5px;
+            color: #FFFFFF;
+            background: #F65353;
+        }
+    }
+    a.@{xc}kefudianhua {
+        i {
+            color: #51dd51;
+        }
+        text-align: center;
+        display: block;
+        height: 100%;
+        line-height: @footer-height;
     }
 }

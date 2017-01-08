@@ -16,10 +16,10 @@
 		<meta name="robots" content="index,follow" />
 		<meta http-equiv="Cache-Control" content="no-siteapp">
 		<link rel="icon" type="image/png" href="../assets/images/favicon.png">
+		
 		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
-		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_j7z832lx2vtjra4i.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
 		<link rel="stylesheet" type="text/css" href="../css/main.css" />
 	</head>
 
@@ -34,62 +34,57 @@
 			<div class="am-g xc-g-user">
 				<div class="xc-user">
 					<div class="xc-user-header">
-						<a href="#" class="xc-user-header-img">
-							<img src="../images/user/user.png" />
+						<a :href="subUrl" class="xc-user-header-img">
+							<img :src="wx_headpic" />
 						</a>
-						<div class="xc-user-header-btn">
-							<button class="am-btn">立即登录</button>
-						</div>
+						<a :href="subUrl">
+							<div class="xc-user-header-btn">
+								<p v-if="!wx_nickname" class="btn">
+									立即登录
+								</p>
+								<p>
+									{{wx_nickname}}
+								</p>
+							</div>
+						</a>
 					</div>
 				</div>
 				
 				<div class="xc-list-box">
 					<ul class="am-list">
-						<!--<li class="ta-ripple">
-							<a href="#">
-								<i class="iconfont icon-dingdan xc-list-icon-left" style="color: #70cbde;"></i> 
-								<span>我的订单</span>
-								<i class="iconfont icon-you xc-list-icon-right"></i>
-							</a>
-						</li>
-						<li class="ta-ripple">
-							<a href="#">
-								<i class="iconfont icon-youhuiquan xc-list-icon-left" style="color: #e18873;"></i> 
-								<span>我的优惠券</span>
-								<i class="iconfont icon-you xc-list-icon-right"></i>
-							</a>
-						</li>
-						<li class="ta-ripple">
-							<a href="#">
-								<i class="iconfont icon-dizhi xc-list-icon-left" style="color: #61d87b;"></i> 
-								<span>我的地址</span>
-								<i class="iconfont icon-you xc-list-icon-right"></i>
-							</a>
-						</li>-->
-						<li class="ta-ripple">
-							<a href="#">
+						<li>
+							<a :href="orderUrl">
 								<img class="xc-list-icon-left" src="../images/icon/icon-dingdan.png" alt="" />
 								<span>我的订单</span>
 								<i class="iconfont icon-you xc-list-icon-right"></i>
 							</a>
 						</li>
-						<li class="ta-ripple">
-							<a href="coupon.html">
+						<li>
+							<a :href="couponUrl">
 								<img class="xc-list-icon-left" src="../images/icon/icon-youhuiquan.png" alt="" />
 								<span>我的优惠券</span>
 								<i class="iconfont icon-you xc-list-icon-right"></i>
 							</a>
 						</li>
-						<li class="ta-ripple">
-							<a href="address.html">
+						<li>
+							<a :href="addressUrl">
 								<img class="xc-list-icon-left" src="../images/icon/icon-address.png" alt="" />
 								<span>我的地址</span>
 								<i class="iconfont icon-you xc-list-icon-right"></i>
 							</a>
 						</li>
+						<li>
+							<a :href="collectUrl" class="no-icon">
+								<span>我的收藏</span>
+								<i class="iconfont icon-you xc-list-icon-right"></i>
+							</a>
+						</li>
 						<li class="xc-list-br"></li>
 						<li>
-							<a href="#" class="no-icon">关于</a>
+							<a href="javascript:;" class="no-icon">
+								<span>关于</span>
+								<i class="iconfont icon-you xc-list-icon-right"></i>
+							</a>
 						</li>
 					</ul>
 				</div>
@@ -138,15 +133,44 @@
 		<script src="../assets/js/fastclick.min.js"></script>
 		<script src="../assets/js/jquery.min.js"></script>
 		<script src="../assets/js/amazeui.min.js"></script>
-		<script src="../assets/js/swiper-3.4.0.jquery.min.js"></script>
 		<script src="../js/xuncheng.js"></script>
 		
 		<script type="text/javascript">
 			window.vueModel = new Vue({
 				el: "#xc-app",
 				data: {
+					uid: $.xuncheng.getUid(),
+					subUrl: '../component/login.html',
+					orderUrl: '../component/login.html',
+					couponUrl: '../component/login.html',
+					addressUrl: '../component/login.html',
+					collectUrl: '../component/login.html',
+					wx_nickname: '',
+					wx_headpic: '../images/user/user.png',
+					umoblie: ''
 				}
 			});
+			;(function(){
+				var uid = $.xuncheng.getUrlParam('uid');
+				if($.xuncheng.getUrlParam('uid')){
+					vueModel.uid = $.xuncheng.setUid(uid)
+				}
+				if(vueModel.uid){
+					$.getJSON('http://m.xunchengweidao.com/muinfo', {uid: vueModel.uid}, function(data) {
+						if(data.resultCode != 10000){return false;}
+						vueModel.wx_nickname = data.wx_nickname;
+						vueModel.wx_headpic = data.wx_headpic;
+						vueModel.umoblie = data.umoblie;
+						vueModel.subUrl = 'info.html';
+						vueModel.orderUrl = 'order-list.html';
+						vueModel.couponUrl = 'coupon.html';
+						vueModel.addressUrl = 'address.html';
+						vueModel.collectUrl = 'collect.html';
+					}).fail(function(result) {
+						$.DialogFx.alertError(result.responseJSON.showMessage || '用户数据获取失败', 'login');
+					})
+				}
+			}());
 		</script>
 	</body>
 

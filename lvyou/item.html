@@ -16,10 +16,11 @@
 		<meta name="robots" content="index,follow" />
 		<meta http-equiv="Cache-Control" content="no-siteapp">
 		<link rel="icon" type="image/png" href="../assets/images/favicon.png">
+		
 		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_rs14nvnw70kke29.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
 		<link rel="stylesheet" type="text/css" href="../css/main.css" />
 	</head>
 
@@ -40,24 +41,24 @@
 			</header>
 			
 			<div class="am-g">
-				<img class="am-img-responsive lazy" data-original="../images/banner-0.jpg" src="../images/bg/home-bg.jpg" />
+				<img class="am-img-responsive lazy" :data-original="travleDetail.ttpic" src="../images/bg/home-bg.jpg" />
 			</div>
 			
 			<div class="am-g xc-item-goods">
 				<p class="xc-item-title">
-					{{ goodsData.title }}
+					{{ travleDetail.tname }}
 				</p>
 				<p class="price">
 					<span class="xc-price">¥</span>
 					<span class="price-txt">
-						{{ goodsData.price }}
+						{{ travleDetail.tprice }}
 					</span>
 				</p>
 				<div class="xc-hr"></div>
 
 				<p class="merchant">
 					<img src="../images/icon/icon-dianpu.png" width="20">
-					<span class="am-text-xs">{{ goodsData.merchant }}</span>
+					<span class="am-text-xs">{{ travleDetail.tshop }}</span>
 				</p>
 
 			</div>
@@ -65,17 +66,17 @@
 			<div class="am-g">
 
 				<div class="xc-video-box" id="xc-video-box">
-					<video class="xc-video" :src="goodsData.video.src" controls="controls" loop="loop" :poster="goodsData.video.img"></video>
+					<video class="xc-video" :src="travleDetail.tvideo" controls="controls" loop="loop" :poster="travleDetail.video.img"></video>
 				</div>
 
-				<img v-for="explain in goodsData.explain" class="am-img-responsive lazy" :data-original="explain" src="../images/bg/750.jpg" />
+				<img v-for="tcpic in travleDetail.tcpicList" class="am-img-responsive lazy" :data-original="tcpic" src="../images/bg/750.jpg" />
 
 				<div class="xc-list-box">
 					<ul class="am-list">
 						<li class="ta-ripple">
 							<a href="javascript:;">
 								<img class="xc-list-icon-left" src="../images/icon/icon-pInfo.png" alt="" />
-								<span>发现	专题名称</span>
+								<span>发现	{{travleDetail.tfeature}}</span>
 								<i class="iconfont icon-you xc-list-icon-right"></i>
 							</a>
 						</li>
@@ -114,20 +115,10 @@
 			</div>
 
 			<footer class="xc-footer xc-footer-goods am-g">
-				<div class="am-u-sm-4">
-					<a class="am-u-sm-6" href="../user/index.html">
-						<i class="iconfont icon-user icon-xxl"></i>
-					</a>
-					<a class="am-u-sm-6" href="../component/cart.html">
-						<i class="iconfont icon-gouwuche icon-xxl"></i>
-					</a>
-				</div>
-				<div class="am-u-sm-4 xc-add-btn">
-					加入购物车
-				</div>
-				<div class="am-u-sm-4 xc-submit-btn">
-					立即购买
-				</div>
+				<a class="xc-kefudianhua" href="tel:13701378834">
+					<i class="iconfont icon-dianhua"></i>
+					立即咨询热线电话
+				</a>
 			</footer>
 
 		</div>
@@ -143,28 +134,25 @@
 			window.vueModel = new Vue({
 				el: "#xc-app",
 				data: {
+					uid: $.xuncheng.getUid(),
 					queryId: $.xuncheng.getUrlParam('id'),
-					goodsData: {},
+					travleDetail: {},
 					commentData: []
 				}
 			});
 
 			;
 			(function() {
-				$.getJSON('../js/data/goodsData.json', function(data) {
-					vueModel.goodsData = data;
-					vueModel.$nextTick(function() {
-						new Swiper('#goods-banner>.swiper-container', {
-							pagination: '.swiper-pagination',
-							paginationClickable: true,
-							lazyLoading: true,
-							lazyLoadingInPrevNext: true,
-							lazyLoadingInPrevNextAmount: 2
-						});
-						$('img.lazy').lazyload();
-					})
+				$.getJSON('http://m.xunchengweidao.com/mtd', { tid: vueModel.queryId }, function(data) {
+					if(data.resultCode != 10000){
+						$.DialogFx.alertError(data.showMessage || '旅游产品数据请求失败');
+						return false;
+					}
+					data.travleDetail.tcpicList = data.travleDetail.tcpic.split(',');
+					vueModel.travleDetail = data.travleDetail;
+					$('img.lazy').lazyload();
 				}).fail(function() {
-					$.DialogFx.alert({content: '服务器内容错误'})
+					$.DialogFx.alert({content: '服务器内部错误'})
 				})
 			}());
 
@@ -175,7 +163,7 @@
 						$('.xc-comment-imgs > img').lazyload();
 					})
 				}).fail(function() {
-					$.DialogFx.alert({content: '服务器内容错误'})
+					$.DialogFx.msg('评论数据获取失败')
 				})
 			})
 		</script>

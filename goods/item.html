@@ -16,10 +16,11 @@
 		<meta name="robots" content="index,follow" />
 		<meta http-equiv="Cache-Control" content="no-siteapp">
 		<link rel="icon" type="image/png" href="../assets/images/favicon.png">
+		
 		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_rs14nvnw70kke29.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
 		<link rel="stylesheet" type="text/css" href="../css/main.css" />
 	</head>
 
@@ -43,9 +44,9 @@
 			<div class="xc-banner xc-goods-banner" id="goods-banner">
 				<div class="swiper-container">
 					<div class="swiper-wrapper">
-						<div class="swiper-slide" v-for="bData in goodsData.banner">
+						<div class="swiper-slide" v-for="ptpic in productDetail.ptpicList">
 							<a href="javascript:void(0);">
-								<img class="swiper-lazy" src="../images/bg/480.jpg" :data-src="bData" />
+								<img class="swiper-lazy" src="../images/bg/480.jpg" :data-src="ptpic" />
 							</a>
 						</div>
 					</div>
@@ -55,19 +56,19 @@
 
 			<div class="am-g xc-item-goods">
 				<p class="xc-item-title">
-					{{ goodsData.title }}
+					{{ productDetail.pname }}
 				</p>
 				<p class="price">
 					<span class="xc-price">¥</span>
 					<span class="price-txt">
-						{{ goodsData.price }}
+						{{ productDetail.pprice }}
 					</span>
 				</p>
 				<div class="xc-hr"></div>
 
 				<p class="merchant">
 					<img src="../images/icon/icon-dianpu.png" width="20">
-					<span class="am-text-xs">{{ goodsData.merchant }}</span>
+					<span class="am-text-xs">{{ productDetail.pshop }}</span>
 				</p>
 
 			</div>
@@ -75,22 +76,22 @@
 			<div class="am-g">
 
 				<div class="xc-video-box" id="xc-video-box">
-					<!--<div class="xc-video-play">
+					<div class="xc-video-play">
 						<i class="am-icon-play xc-video-play-icon"></i>
 						<img class="lazy" src="../images/bg/480.jpg" />
-					</div>-->
+					</div>
 
-					<video class="xc-video" :src="goodsData.video.src" controls="controls" loop="loop" :poster="goodsData.video.img"></video>
+					<video class="xc-video" :src="productDetail.pvideo" controls="controls" loop="loop"></video>
 				</div>
 
-				<img v-for="explain in goodsData.explain" class="am-img-responsive lazy" :data-original="explain" src="../images/bg/750.jpg" />
+				<img v-for="pcpic in productDetail.pcpic" class="am-img-responsive lazy" :data-original="pcpic" src="../images/bg/750.jpg" />
 
 				<div class="xc-list-box">
 					<ul class="am-list">
 						<li class="ta-ripple">
 							<a href="javascript:;">
-								<img class="xc-list-icon-left" src="../images/icon/icon-pInfo.png" alt="" />
-								<span>发现	专题名称</span>
+								<img class="xc-list-icon-left" src="../images/icon/icon-pInfo.png"/>
+								<span>发现	{{productDetail.pfeature}}</span>
 								<i class="iconfont icon-you xc-list-icon-right"></i>
 							</a>
 						</li>
@@ -138,10 +139,14 @@
 					</a>
 				</div>
 				<div class="am-u-sm-4 xc-add-btn">
-					加入购物车
+					<a href="javascript:;" @click="addCart">
+						加入购物车
+					</a>
 				</div>
 				<div class="am-u-sm-4 xc-submit-btn">
-					立即购买
+					<a href="../component/order.html">
+						立即购买
+					</a>
 				</div>
 			</footer>
 
@@ -158,16 +163,37 @@
 			window.vueModel = new Vue({
 				el: "#xc-app",
 				data: {
+					uid: $.xuncheng.getUid(),
 					queryId: $.xuncheng.getUrlParam('id'),
-					goodsData: {},
+					productDetail: {},
 					commentData: []
+				},
+				methods: {
+					addCart: function(){
+						$.get('http://m.xunchengweidao.com/mca', {
+							uid: vueModel.uid,
+							pid: vueModel.queryId,
+							cnum: 1
+						}, function(data) {
+							window.location.href = '../component/cart.html'
+						}).fail(function(result) {
+							$.DialogFx.alert(result.responseJSON.showMessage || '服务器内部错误');
+						})
+					}
 				}
 			});
 
 			;
 			(function() {
-				$.getJSON('../js/data/goodsData.json', function(data) {
-					vueModel.goodsData = data;
+				$.getJSON('http://m.xunchengweidao.com/mpd', {pid: vueModel.queryId}, function(data) {
+					if(data.resultCode != 10000){
+						$.DialogFx.alertError(data.showMessage || '商品数据请求失败')
+						return false;
+					}
+					data.productDetail.ptpicList = data.productDetail.ptpic.split(',');
+					data.productDetail.pcpicList = data.productDetail.pcpic.split(',');
+						
+					vueModel.productDetail = data.productDetail;
 					vueModel.$nextTick(function() {
 						new Swiper('#goods-banner>.swiper-container', {
 							pagination: '.swiper-pagination',
@@ -179,7 +205,7 @@
 						$('img.lazy').lazyload();
 					})
 				}).fail(function() {
-					$.DialogFx.alert({content: '服务器内容错误'})
+					$.DialogFx.alertError(data.showMessage || '商品数据请求失败')
 				})
 			}());
 
@@ -190,7 +216,7 @@
 						$('.xc-comment-imgs > img').lazyload();
 					})
 				}).fail(function() {
-					$.DialogFx.alert({content: '服务器内容错误'})
+					$.DialogFx.alert('评论服务器内部错误')
 				})
 			})
 		</script>

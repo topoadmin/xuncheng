@@ -1,0 +1,50 @@
+// 选项卡
+.@{tabs} {
+    ul.@{tabs}-nav {
+        position: relative;
+        background-color: @c-bg-l;
+        padding: 10px 0;
+        margin-bottom: 11px;
+        border-bottom: @hr;
+        display: flex;
+        li {
+            flex: 1;
+            text-align: center;
+            border-right: @hr;
+            &:last-of-type {
+                border: none;
+            }
+            &>a {
+                color: @c-txt;
+                font-size: 1.6rem;
+                padding-bottom: 3px;
+            }
+            &.active>a {
+                color: #d55326;
+            }
+        }
+        .@{xc}tabs-bar {
+            position: absolute;
+            left: 0;
+            bottom: 7px;
+            width: 0;
+            height: 2px;
+            background-color: #d46139;
+            transition: all .2s;
+        }
+    }
+    div.@{tabs}-box {
+        position: relative;
+        overflow: hidden;
+        background-color: @c-bg-l;
+        &>div {
+            width: 100%;
+            display: none;
+            &.active {
+                display: block;
+            }
+            
+        }
+    }
+}
+

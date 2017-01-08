@@ -19,8 +19,7 @@
 		
 		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
-		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_ba6ap3y914r96bt9.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
 		<link rel="stylesheet" type="text/css" href="../css/main.css" />
 		
 	</head>
@@ -43,31 +42,34 @@
 			
 			<div class="am-g">
 				<ul class="xc-bg-l xc-cart-list">
-					<li v-for="(index, cData) in cartData">
+					<li v-for="(index, cData) in cartList">
 						<div class="xc-cart-left" @click="check(index)">
-							<img v-if="cData.check" src="../images/icon/icon-check-2.png"/>
-							<img v-else src="../images/icon/icon-check-0.png"/>
+							<template v-if="cData.cstatus != 0">
+								<img v-if="cData.check" src="../images/icon/icon-check-2.png"/>
+								<img v-else src="../images/icon/icon-check-0.png"/>
+							</template>
 						</div>
 						<div class="xc-cart-right">
 							<div class="xc-cart-right-info">
-								<img :src="cData.img"/>
+								<img :src="cData.plpic"/>
 								<div>
-									<p class="title">{{cData.title}}</p>
-									<p class="price">
+									<p class="title">{{cData.pname}}</p>
+									<p class="price" v-if="cData.cstatus == 0">商品缺货，暂时无法购买</p>
+									<p class="price" v-else>
 										<span class="xc-price">¥</span>
-										<span class="price-txt">{{cData.price}}</span>
+										<span class="price-txt">{{cData.prprice}}</span>
 									</p>
 								</div>
 							</div>
 							<div class="xc-cart-edit">
 								<i class="iconfont icon-jian xc-cart-edit-left" @click="minus(index)"></i>
-								<input class="xc-cart-edit-input" type="tel" max="20" min="1" v-model="cData.number" readonly />
+								<input class="xc-cart-edit-input" type="tel" max="50" min="1" v-model="cData.cnum" @input="inputCnum(index)" />
 								<i class="iconfont icon-plus xc-cart-edit-right" @click="plus(index)"></i>
 							</div>
 						</div>
 					</li>
 				</ul>
-				
+				<p class="am-padding-sm am-text-center null-data" v-if="!cartList.length">暂无购物车数据</p>
 			</div>
 			
 			<footer class="xc-footer xc-footer-cart">
@@ -82,7 +84,7 @@
 						<span class="price-txt">{{ total }}</span>
 					</p>
 					<button class="xc-btn" @click="remove" v-if="editCart" :disabled="total==0 ? true : false">
-						<i class="iconfont icon-shanchu icon-xl"></i>
+						删除
 					</button>
 					<button class="xc-btn" @click="submit" v-else :disabled="total==0 ? true : false">
 						下单
@@ -101,38 +103,69 @@
 			window.vueModel = new Vue({
 				el: "#xc-app",
 				data: {
+					uid: $.xuncheng.getUid(),
 					checkAllSelected: false,
 					total: 0,
-					cartData: [],
+					cartList: [],
 					editCart: false
 				},
 				methods: {
+					inputCnum: function(index){
+						var cartData = vueModel.cartList[index];
+						if(cartData.cnum >= 50) {
+							$.DialogFx.msg({
+								content: '单品单次最多购买 50 件，大宗购买请联系客服',
+								time: 5000
+							});
+							vueModel.cartList[index].cnum = 50;
+							return false;
+						}else if(cartData.cnum <= 0){
+							vueModel.cartList[index].cnum = 1;
+						}
+					},
 					minus: function(index) {
-						var number = vueModel.cartData[index].number;
-						if(number > 1){
-							vueModel.cartData[index].number--;
+						var cartData = vueModel.cartList[index];
+						var cnum = cartData.cnum;
+						if(cnum > 1){
+							vueModel.cartList[index].cnum--;
+							editCartItem(index, 'minus')
 						}else{
 							$.DialogFx.confirm({content: '确定删除这个商品吗？', confirm: function(){
-								vueModel.cartData.splice(index, 1)
+								removeCart(cartData.pid).done(function(data){
+									if(data.resultCode == 10000){
+										vueModel.cartList.splice(index, 1)
+									}
+								})
 							}});
 						}
-						if(vueModel.cartData[index].check){
+						if(cartData.check){
 							vueModel.countTotal()
 						}
 					},
 					plus: function(index) {
-						vueModel.cartData[index].number++;
-						if(vueModel.cartData[index].check){
+						var cartData = vueModel.cartList[index];
+						if(cartData.cnum >= 50) {
+							$.DialogFx.msg({
+								content: '大宗购买请联系客服',
+								time: 5000
+							});
+							return false;
+						}
+						vueModel.cartList[index].cnum++;
+						editCartItem(index, 'plus')
+						if(cartData.check){
 							vueModel.countTotal()
 						}
 					},
 					check: function(index) { // 选择商品
-						vueModel.cartData[index].check = !vueModel.cartData[index].check
-						vueModel.countTotal()
+						if(vueModel.cartList[index].cstatus == 1) {
+							vueModel.cartList[index].check = !vueModel.cartList[index].check
+							vueModel.countTotal()
+						}
 					},
 					checkAll: function() { // 选择所有
 						vueModel.checkAllSelected = !vueModel.checkAllSelected;
-						vueModel.cartData.forEach(function(item){
+						vueModel.cartList.forEach(function(item){
 							item.check = vueModel.checkAllSelected;
 						})
 						vueModel.countTotal()
@@ -140,11 +173,13 @@
 					countTotal: function() { // 计算总价
 						var total = 0;
 						var checkAllOf = true;
-						vueModel.cartData.forEach(function(item){
-							if(item.check){
-								total += parseFloat(item.number * item.price)
-							}else{
-								checkAllOf = false;
+						vueModel.cartList.forEach(function(item){
+							if(item.cstatus == 1){ // cstatus 为 1时不可购买
+								if(item.check){
+									total += parseFloat(item.cnum * item.prprice)
+								}else{
+									checkAllOf = 0;
+								}
 							}
 						})
 						vueModel.checkAllSelected = checkAllOf;
@@ -153,29 +188,89 @@
 					},
 					submit: function() { // 提交订单
 						window.location.href = 'order.html'
-						/*if($.xuncheng.isLogin()){
-							console.log('您已经登录了')
-						}*/
 					},
 					edit: function() { // 编辑购物车
 						var self = this;
 						self.editCart = !self.editCart;
+					},
+					remove: function() { // 批量删除商品
+						$.DialogFx.confirm({content: '确定删除多个商品？', confirm: function(){
+							var ids = '';
+							vueModel.cartList.forEach(function(item, index){
+								if(item.check){
+									ids += item.pid+',';
+								}
+							})
+							ids = ids.slice(0,-1);
+							removeCart(ids).done(function(data){
+								ids.split(',').forEach(function(id){
+									vueModel.cartList.forEach(function(item, index){
+										if(item.pid == id){
+											vueModel.cartList.splice(index, 1)
+										}
+									})
+								})
+							})
+						}});
 					}
 				}
 			});
 			
 			;
 			(function() {
-				$.getJSON('../js/data/cartData.json', function(data) {
-					data.forEach(function(item){
-						item.check = false;
-						vueModel.cartData.push(item)
-					})
-					
+				$.get('http://m.xunchengweidao.com/mcl', {uid: vueModel.uid}, function(data) {
+					if(data.resultCode != 10000){
+						$.DialogFx.alertError(data.showMessage || '购物车数据获取失败')
+						return false;
+					}
+					if(data.cartList){
+						data.cartList.forEach(function(item){
+							item.check = false;
+							vueModel.cartList.push(item)
+						})
+					}else {
+						data.cartList = null;
+					}
 				}).fail(function() {
-					$.DialogFx.alert({content: '服务器内容错误'})
+					$.DialogFx.alertError(data.showMessage || '购物车数据获取失败')
 				})
 			}());
+			
+			// 编辑商品数据
+			function editCartItem(index, methods) {
+				var cartData = vueModel.cartList[index];
+				$.get('http://m.xunchengweidao.com/mce', {uid: vueModel.uid, items: cartData.pid+','+cartData.cnum}, function(data) {
+					if(data.resultCode != 10000){
+						editError(data.showMessage || '编辑购物车数据失败', index, methods)
+						return false;
+					}
+				}).fail(function(result) {
+					editError(result.responseJSON.showMessage || '编辑购物车数据失败', index, methods)
+				})
+			}
+			
+			// 编辑商品数据失败提示
+			function editError(msg,index,methods){
+				if(methods == 'plus'){
+					vueModel.cartList[index].cnum--;
+				}else{
+					vueModel.cartList[index].cnum++;
+				}
+				$.DialogFx.alert(msg || '编辑购物车数据失败');
+			}
+			
+			// 删除商品（可批量）
+			function removeCart(ids) {
+				var ajax = $.get('http://m.xunchengweidao.com/mcd', {uid: vueModel.uid, items: ids}, function(data) {
+					if(data.resultCode != 10000){
+						$.DialogFx.alert(data.showMessage || '删除购物车数据失败')
+						return false;
+					}
+				}).fail(function(result) {
+					$.DialogFx.alert(result.responseJSON.showMessage || '删除购物车数据失败');
+				})
+				return ajax;
+			}
 			
 		</script>
 	</body>

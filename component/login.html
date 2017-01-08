@@ -19,8 +19,7 @@
 
 		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
-		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_t6ujvnem02gzm2t9.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
 		<link rel="stylesheet" type="text/css" href="../css/main.css" />
 
 	</head>
@@ -39,9 +38,15 @@
 			<div class="am-g xc-login">
 				<p class="title">第三方快捷登录</p>
 				<div class="xc-third-party ">
-					<img src="../images/icon/icon-qq.png" />
-					<img src="../images/icon/icon-wx.png" />
-					<img src="../images/icon/icon-wb.png" />
+					<a href="javascript:qqLogin();">
+						<img src="../images/icon/icon-qq.png" />
+					</a>
+					<a href="javascript:weixinLogin();">
+						<img src="../images/icon/icon-wx.png" />
+					</a>
+					<a href="javascript:weiboLogin();">
+						<img src="../images/icon/icon-wb.png" />
+					</a>
 				</div>
 			</div>
 
@@ -52,6 +57,20 @@
 		<script src="../assets/js/jquery.min.js"></script>
 		<script src="../assets/js/amazeui.min.js"></script>
 		<script src="../js/xuncheng.js"></script>
+		
+		<script type="text/javascript">
+			function weixinLogin() {
+				window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3c771e957a985911&redirect_uri=http%3a%2f%2fm.xunchengweidao.com%2fweixintest2&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
+			}
+			function qqLogin() {
+				$.DialogFx.msg('暂未开通')	
+			}
+			function weiboLogin() {
+				$.DialogFx.msg('暂未开通')	
+			}
+		</script>
+		
+		
 	</body>
 
 </html>

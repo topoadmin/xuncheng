@@ -6,8 +6,8 @@
 		<title>寻城</title>
 		<meta id="meta-keywords" name="keywords" content="寻城">
 		<meta id="meta-description" name="description" content="寻城">
-		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<meta name="renderer" content="webkit">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
 		<meta name="apple-mobile-web-app-title" content="寻城">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -16,65 +16,61 @@
 		<meta name="robots" content="index,follow" />
 		<meta http-equiv="Cache-Control" content="no-siteapp">
 		<link rel="icon" type="image/png" href="../assets/images/favicon.png">
-
+		
 		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
 		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
 		<link rel="stylesheet" type="text/css" href="../css/main.css" />
-
 	</head>
 
 	<body class="xc-bg">
 		<div id="xc-app" class="xc-app xc-header-fixed" v-cloak>
-			<header class="am-header xc-header">
+			<header class="am-header xc-header xc-bb">
 				<div class="am-header-left am-header-nav">
 					<a href="javascript:$.xuncheng.back();">
 						<i class="am-header-icon iconfont icon-zuo"></i>
 					</a>
 				</div>
-				<span class="am-header-title">编辑发票信息</span>
+				<span class="am-header-title">
+					个人资料
+				</span>
 			</header>
 
-			<div class="am-g xc-invoice-box">
-				<ul class="am-list xc-bg-l">
-					<li class="title">
-						发票抬头
-					</li>
-					<li class="radio">
-						<div @click="check(1)">
-							<img v-if="role == 1" src="../images/icon/icon-check-2.png"/>
-							<img v-else src="../images/icon/icon-check-0.png"/>
-							<span>个人</span>
-						</div>
-						<div @click="check(2)">
-							<img v-if="role == 2" src="../images/icon/icon-check-2.png"/>
-							<img v-else src="../images/icon/icon-check-0.png"/>
-							<span>单位</span>
-						</div>
-					</li>
-					<li class="info">
-						<input type="text" placeholder="填写抬头名称" v-model="info" maxlength="18" />
-					</li>
-				</ul>
+			<div class="am-g">
+				<div class="xc-list-box user-info-box">
+					<ul class="xc-list">
+						<li>
+							<a href="javascript:;">
+								<span>头像</span>
+								<img class="user-info-list-right" :src="wx_headpic" />
+							</a>
+							<i class="iconfont icon-you"></i>
+						</li>
+						<li>
+							<a :href="'update-name.html'">
+								<span>昵称</span>
+								<span class="user-info-list-right">{{wx_nickname}}</span>
+							</a>
+							<i class="iconfont icon-you"></i>
+						</li>
+					</ul>
+					<ul class="xc-list" style="margin-top: 10px;">
+						<li>
+							<a :href="'bangding.html'">
+								<span>绑定手机</span>
+								<span class="user-info-list-right">{{umoblie}}</span>
+							</a>
+							<i class="iconfont icon-you"></i>
+						</li>
+					</ul>
+				</div>
+				
 			</div>
-			
-			<div class="am-g xc-invoice-info">
-				<ul class="am-list xc-bg-l">
-					<li class="title">
-						发票内容
-					</li>
-					<li class="classify">
-						食品
-					</li>
-				</ul>
-			</div>
-
-			<footer class="xc-footer xc-footer-cart">
-				<a href="javascript:;" @click="submit" class="xc-btn" :disabled="info? false:true">
-					确定
-				</a>
+			<footer class="xc-footer xc-bt xc-footer-user-info">
+				<button type="button" onclick="$.xuncheng.outLogin()">
+					退出当前账户
+				</button>
 			</footer>
-
 		</div>
 
 		<script src="../assets/js/vue.min.js"></script>
@@ -82,31 +78,27 @@
 		<script src="../assets/js/jquery.min.js"></script>
 		<script src="../assets/js/amazeui.min.js"></script>
 		<script src="../js/xuncheng.js"></script>
+		
 		<script type="text/javascript">
 			window.vueModel = new Vue({
 				el: "#xc-app",
 				data: {
-					orderId: false,
-					info: '',
-					role: 1
-				},
-				methods: {
-					check: function(index) {
-						vueModel.role = index;
-					},
-					submit: function() {
-						if(vueModel.orderId){
-							window.location.href = 'order.html?orderId='+vueModel.orderId;
-						}else {
-							$.DialogFx.alert('未找到的订单ID')
-						}
-					}
+					uid: $.xuncheng.getUid(),
+					wx_nickname: '',
+					wx_headpic: '../images/user/user.png',
+					umoblie: ''
 				}
-			});;
-			(function() {
-				var orderId = $.xuncheng.getUrlParam('orderId');
-				if(typeof orderId == 'string') {
-					vueModel.orderId = orderId;
+			});
+			;(function(){
+				if(vueModel.uid){
+					$.getJSON('http://m.xunchengweidao.com/muinfo', {uid: vueModel.uid}, function(data) {
+						if(data.resultCode != 10000){return false;}
+						vueModel.wx_nickname = data.wx_nickname;
+						vueModel.wx_headpic = data.wx_headpic;
+						vueModel.umoblie = data.umoblie;
+					}).fail(function(result) {
+						$.DialogFx.alertError(result.responseJSON.showMessage || '用户数据获取失败', 'login');
+					})
 				}
 			}());
 		</script>

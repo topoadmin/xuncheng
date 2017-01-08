@@ -19,8 +19,7 @@
 
 		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
-		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_njtj5mbb8822csor.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
 		<link rel="stylesheet" type="text/css" href="../css/main.css" />
 
 	</head>
@@ -37,21 +36,21 @@
 			</header>
 
 			<div class="am-g">
-				<div class="xc-address xc-address-list xc-bg-l" v-for="(index, address) in addressData">
+				<div class="xc-address xc-address-list xc-bg-l" v-for="(index, address) in addressList">
 					<a href="javascript:;" @click="selectAddress(index)">
-						<p class="address-title">{{ address.name }}</p>
-						<p class="address-phone">{{ address.phone }}</p>
-						<p class="address-content">{{ address.prov + ' '+ address.city + ' '+ address.district + ' '+ address.info }}</p>
+						<p class="address-title">{{ address.userName }}</p>
+						<p class="address-phone">{{ address.telNumber }}</p>
+						<p class="address-content">{{ address.detailInfo }}</p>
 						<i class="iconfont icon-you icon-lg address-icon-you"></i>
 					</a>
 					<div class="address-setting">
 						<div class="address-default" @click="check(index)">
-							<img v-if="address.check" src="../images/icon/icon-check-2.png" />
+							<img v-if="address.adefault == 1" src="../images/icon/icon-check-2.png" />
 							<img v-else src="../images/icon/icon-check-0.png" />
 							<span>设为默认地址</span>
 						</div>
 						<div class="address-checkbox">
-							<a :href="'address-edit.html?addressId='+address.id">
+							<a :href="'address-edit.html?addid='+address.addid">
 								编辑
 							</a>
 							<a href="javascript:;" @click="remove(index)">
@@ -60,10 +59,11 @@
 						</div>
 					</div>
 				</div>
+				<p class="am-padding-sm am-text-center null-data" v-if="!addressList.length">暂无收货地址数据</p>
 			</div>
 
 			<footer class="xc-footer xc-footer-cart">
-				<a href="address-edit.html" class="xc-btn">
+				<a :href="'address-edit.html?uid='+ uid" class="xc-btn">
 					新建地址
 				</a>
 			</footer>
@@ -79,13 +79,37 @@
 			window.vueModel = new Vue({
 				el: "#xc-app",
 				data: {
-					orderId: false,
-					addressData: [],
+					orderId: $.xuncheng.getUrlParam('orderId'),
+					uid: $.xuncheng.getUid(),
+					addressList: [],
 					checkAddressId: false
 				},
 				watch: {
-					checkAddressId: function(){
-						// 修改默认地址
+					checkAddressId: function() {
+						console.log(JSON.stringify(vueModel.checkAddress))
+							// 修改默认地址
+						http: //m.xunchengweidao.com/mad
+							$.get('http://m.xunchengweidao.com/mad', {
+								addid: vueModel.checkAddressId
+							}, function(data) {
+								var ar = data.addressDetail;
+								ar.adefault = 1;
+								
+								$.get('http://m.xunchengweidao.com/mae', {
+									"addid": ar.addid,
+									"userName": ar.userName,
+									"postalCode": ar.postalCode,
+									"provinceName": ar.provinceName,
+									"cityName": ar.cityName,
+									"detailInfo": ar.detailInfo,
+									"telNumber": ar.telNumber,
+									"adefault": ar.adefault,
+								}).fail(function(result) {
+									$.DialogFx.alert(result.responseJSON.showMessage || '用户数据获取失败');
+								})
+							}).fail(function(result) {
+								$.DialogFx.alert(result.responseJSON.showMessage);
+							})
 					}
 				},
 				methods: {
@@ -94,17 +118,17 @@
 							$.DialogFx.alert({
 								content: '获取收货地址ID==' + vueModel.addressData[index].id,
 								end: function() {
-									window.location.href = '../component/order.html?orderId='+vueModel.orderId
+									window.location.href = '../component/order.html?orderId=' + vueModel.orderId
 								}
 							})
 						}
 					},
 					check: function(index) {
-						vueModel.addressData.forEach(function(item, i) {
-							item.check = false;
+						vueModel.addressList.forEach(function(item, i) {
+							item.adefault = 0;
 							if(index == i) {
-								item.check = !item.check;
-								vueModel.checkAddressId = item.id;
+								item.adefault = 1;
+								vueModel.checkAddressId = item.addid;
 							}
 						});
 					},
@@ -112,19 +136,22 @@
 						$.DialogFx.confirm({
 							content: '确定删除这个收货地址吗？',
 							confirm: function() {
-								vueModel.addressData.splice(index, 1)
+								vueModel.addressList.splice(index, 1)
 							}
 						});
 					}
 				}
-			});
-			;(function(){
-				var orderId = $.xuncheng.getUrlParam('orderId');
-				if(typeof orderId == 'string'){
-					vueModel.orderId = orderId;
-				}
-				$.get('../js/data/address.json', function(data){
-					vueModel.addressData = data;
+			});;
+			(function() {
+				$.get('http://m.xunchengweidao.com/mal', {
+					uid: vueModel.uid
+				}, function(data) {
+					if(data.resultCode != 10000) {
+						return false;
+					}
+					vueModel.addressList = data.addressList;
+				}).fail(function(result) {
+					$.DialogFx.alertError(result.responseJSON.showMessage || '收货地址列表拉取失败');
 				})
 			}());
 		</script>

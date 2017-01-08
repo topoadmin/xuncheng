@@ -19,8 +19,7 @@
 
 		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
-		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_njtj5mbb8822csor.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.address.min.css" />
 		<link rel="stylesheet" type="text/css" href="../css/main.css" />
 	</head>
@@ -40,10 +39,10 @@
 			<div class="am-g">
 				<div class="xc-address-edit">
 					<form class="xc-bg-l" onsubmit="return false;">
-						<input type="text" placeholder="收货人" required v-model="address.name">
-						<input type="text" placeholder="手机号码" required pattern="^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$" v-model="address.phone">
-						<input type="text" readonly id="address-input" required placeholder="所在地区" :value="address.prov+address.city+address.district" />
-						<input type="text" placeholder="详细地址" required v-model="address.info">
+						<input type="text" placeholder="收货人" required v-model="address.userName">
+						<input type="text" placeholder="手机号码" required pattern="^1[34578]\d{9}$" v-model="address.telNumber">
+						<input type="text" placeholder="所在地区" required id="address-input" readonly :value="address.provinceName + ' ' + address.cityName" />
+						<input type="text" placeholder="详细地址" required v-model="address.detailInfo">
 					</form>
 				</div>
 			</div>
@@ -59,25 +58,27 @@
 		<script src="../assets/js/jquery.min.js"></script>
 		<script src="../assets/js/amazeui.min.js"></script>
 		<script src="../js/xuncheng.js"></script>
-		
+
 		<!-- 地址选择窗口 -->
 		<script src="../assets/js/iscroll.js"></script>
 		<script src="../assets/js/address.min.js"></script>
-
+		<!--<script src="../assets/js/address.js"></script>-->
 		<script type="text/javascript">
 			window.vueModel = new Vue({
 				el: "#xc-app",
 				data: {
+					uid: $.xuncheng.getUrlParam('uid'),
+					addid: $.xuncheng.getUrlParam('addid'),
 					address: {
-						id: '',
-						name: '',
-						phone: '',
-						prov: '',
-						city: '',
-						district: '',
-						info: ''
-					},
-					addressId: false,
+						addid: '',
+						userName: '',
+						telNumber: '',
+						provinceName: '',
+						cityName: '',
+						districtName: '',
+						detailInfo: '',
+						adefault: 1
+					}
 				},
 				methods: {
 					submit: function() {
@@ -86,17 +87,20 @@
 				}
 			});
 			(function() {
-				vueModel.addressId = $.xuncheng.getUrlParam('addressId');
-				if(typeof vueModel.addressId == 'string') { // 判断是编辑地址还是新增地址
-					$.get('../js/data/address.json', function(data) {
-						data.forEach(function(item) {
-							if(vueModel.addressId == item.id) {
-								vueModel.address = item;
-								addressInit()
-							}
-						})
+				if(vueModel.addid) {
+					$.get('http://m.xunchengweidao.com/mad', {addid: vueModel.addid}, function(data) {
+						if(data.resultCode != 10000){
+							$.DialogFx.alertError(data.showMessage || '地址列表拉取失败');
+							return false;
+						}
+						vueModel.address = data.addressDetail;
+						vueModel.$nextTick(function() {
+							addressInit()
+						});
+					}).fail(function(result){
+						$.DialogFx.alertError(result.responseJSON.showMessage || '收货地址拉取失败');
 					})
-				}else{
+				} else {
 					addressInit()
 				}
 			}());
@@ -107,25 +111,40 @@
 				}, false);
 				$('form').validator({
 					submit: function(e, validity) {
-						var formValidity = this.isFormValid();
-						if(formValidity) { // 验证通过
-							$.DialogFx.alert({content: '现在可以提交了'})
-							console.log(JSON.stringify(vueModel.$data))
+						if(this.isFormValid()) { // 验证通过
+							var api = 'http://m.xunchengweidao.com/maa'
+							if(vueModel.addid){
+								api = 'http://m.xunchengweidao.com/mae'
+							}
+							$.get(api, {
+								uid: vueModel.uid,
+								addid: vueModel.address.addid,
+								userName: vueModel.address.userName,
+								provinceName: vueModel.address.provinceName,
+								cityName: vueModel.address.cityName,
+								detailInfo: vueModel.address.detailInfo,
+								telNumber: vueModel.address.telNumber,
+								adefault: vueModel.address.adefault
+							}, function(data) {
+								$.DialogFx.alert(data.showMessage);
+							}).fail(function(result) {
+								$.DialogFx.alert(result.responseJSON.showMessage || '服务器内部错误');
+							})
 						}
 					}
 				});
 			})
-			
+
 			function addressInit() {
 				$("#address-input").address({
-					prov: vueModel.address.prov,
-					city: vueModel.address.city,
-					district: vueModel.address.district,
+					prov: vueModel.address.provinceName,
+					city: vueModel.address.cityName,
+					district: vueModel.address.districtName,
 					scrollToCenter: true,
 					selectEnd: function(json) {
-						for(var k in json) {
-							vueModel.address[k] = json[k]
-						}
+						vueModel.address.provinceName = json.prov;
+						vueModel.address.cityName = json.city;
+						vueModel.address.districtName = json.district;
 					}
 				});
 			}

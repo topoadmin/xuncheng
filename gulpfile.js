@@ -36,8 +36,8 @@ gulp.task('compileLess', function() {
 
 
 gulp.task('watchLess', function() {
-	gulp.watch(paths.less, ['compileLess']); //当所有less文件发生改变时，调用compileLess任务
 	gulp.watch([paths.css,paths.html,paths.js, './**/*.html'], browserSync.reload);
+	gulp.watch(paths.less, ['compileLess']); //当所有less文件发生改变时，调用compileLess任务
 	gulp.watch(['./js/data/*.json'], browserSync.reload);
 });
 

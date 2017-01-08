@@ -19,8 +19,7 @@
 
 		<link rel="stylesheet" type="text/css" href="../assets/css/amazeui.css" />
 		<link rel="stylesheet" type="text/css" href="../assets/css/animate.css" />
-		<link rel="stylesheet" type="text/css" href="../assets/css/swiper-3.4.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_176uasek8phz1tt9.css" />
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_tazxp6e5stznnrk9.css" />
 		<link rel="stylesheet" type="text/css" href="../css/main.css" />
 	</head>
 
@@ -29,30 +28,30 @@
 			<header class="am-header xc-header xc-bb">
 				<span class="am-header-title">商城</span>
 				<div class="am-header-right am-header-nav">
-		          	<a href="#right-link">
-		            	<i class="am-header-icon iconfont icon-gouwuche icon-xxl"></i>
-		          	</a>
-		      	</div>
+					<a href="../component/cart.html">
+						<i class="am-header-icon iconfont icon-gouwuche icon-xxl"></i>
+					</a>
+				</div>
 			</header>
 
 			<div class="am-g xc-g xc-g-shangcheng">
 				<div class="xc-shangcheng-product am-cf">
 
-					<div v-for="data in goodsData" class="am-u-sm-6">
-						<a :href="'item.html?id='+ data.id">
-							<img class="lazy am-img-responsive" src="../images/bg/goods-bg.jpg"  :data-original="data.img" />
+					<div v-for="data in productList" class="am-u-sm-6">
+						<a :href="'item.html?id='+ data.pid">
+							<img class="lazy am-img-responsive" src="../images/bg/goods-bg.jpg" :data-original="data.plpic" />
 						</a>
 						<div class="xc-lvyou-product-content">
 							<p class="title am-text-truncate">
 								<span class="am-padding-right-xs">{{data.classify}}</span>
-								<span>{{data.title}}</span>
+								<span>{{data.pname}}</span>
 							</p>
 							<p class="classify am-text-truncate">
-								{{data.standard}}
+								{{data.pspecifications}}
 							</p>
 							<p class="price">
 								<span class="xc-price">¥</span>
-								<span class="price-txt">{{data.price}}</span>
+								<span class="price-txt">{{data.pprice}}</span>
 							</p>
 						</div>
 					</div>
@@ -108,19 +107,17 @@
 		<script src="../assets/js/jquery.min.js"></script>
 		<script src="../assets/js/amazeui.min.js"></script>
 		<script src="../assets/js/amazeui.lazyload.min.js"></script>
-		<script src="../assets/js/swiper-3.4.0.jquery.min.js"></script>
 		<script src="../js/xuncheng.js"></script>
 		<script type="text/javascript">
 			window.vueModel = new Vue({
 				el: "#xc-app",
 				data: {
-					goodsData: []
+					productList: []
 				}
 			});
 
 			$(function() {
 				var $footerLazy = $('#xc-footer-lazy');
-
 				lazyProduct(function() { // 初始加载一次数据，然后监控滚动加载事件
 					$footerLazy.on('lazy.open', function() {
 						lazyProduct(function() {
@@ -131,14 +128,19 @@
 			});
 
 			function lazyProduct(fn) {
-				/* TODO 获取 城市产品 数据 */
-				$.getJSON('../js/data/goods.json', function(data) {
-					if(data.length){
-						data.forEach(function(value) {
-							vueModel.goodsData.push(value)
+				/* TODO 获取 商品  数据 */
+				$.getJSON('http://m.xunchengweidao.com/mpl', function(data) {
+					if(data.resultCode != 10000){
+						$.DialogFx.alert(data.showMessage || '商品数据请求失败')
+						return false;
+					}
+					
+					if(data.productList.length){
+						data.productList.forEach(function(item) {
+							vueModel.productList.push(item)
 						})
 						vueModel.$nextTick(function(){
-							$('img.lazy').lazyload({threshold: '180px'});
+							$('img.lazy').lazyload();
 						})
 						if($.isFunction(fn)) {
 							fn()
@@ -147,7 +149,7 @@
 						$('#xc-footer-lazy').html('没有数据了')
 					}
 				}).fail(function() {
-					$.DialogFx.alert({content: '服务器内容错误'})
+					$.DialogFx.alert('服务器内部错误')
 				})
 			}
 		</script>

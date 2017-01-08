@@ -8,6 +8,7 @@
 @import "./comment.less";
 @import "./video.less";
 @import "./user.less";
+@import "./tabs.less";
 
 // 框架外部盒子
 .@{xc}app {
@@ -54,6 +55,29 @@
 // ¥ 符号样式
 .@{xc}price {
     font-size: 1.9rem;
+}
+
+.@{xc}list {
+    background: @c-bg-l;
+    li {
+        height: 46px;
+        line-height: 46px;
+        border-bottom: @hr;
+        color: @c-txt;
+        font-size: 1.6rem;
+        padding-left: 10px;
+        padding-right: 50px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        position: relative;
+        &>.icon-you {
+            line-height: 1;
+            position: absolute;
+            top: 15px;
+            right: 10px;
+        }
+    }
 }
 
 // 首页产品布局
@@ -259,7 +283,7 @@
     padding-top: 1px;
     ul {
         li {
-            padding: 10px 10px 0;
+            margin: 10px 10px 0;
         }
     }
 }
@@ -469,8 +493,6 @@
                 height: 46px;
                 line-height: 46px;
             }
-            .title {
-            }
             .price {
                 position: absolute;
                 top: 0;
@@ -493,7 +515,6 @@
                     }
                 }
             }
-            
             i.icon-you {
                 position: absolute;
                 top: 0;
@@ -501,47 +522,50 @@
                 color: @c-hr;
             }
         }
-        .goods-item {
-            padding: 0;
-            line-height: 1.6rem;
-            height: 98px;
-            position: relative;
-            img {
-                position: absolute;
-                top: 14px;
-                left: 10px;
-                width: 70px;
-                height: 70px;
-            }
-            .goods-item-title {
-                overflow-y: hidden;
-                position: absolute;
-                width: 50%;
-                top: 14px;
-                left: 91px;
-                font-size: 1.4rem;
-                color: @txt-color;
-            }
-            .price {
-                position: absolute;
-                bottom: 10px;
-                left: 91px;
-                color: @price-colo;
-                .@{xc}price {
-                    font-size: 1.2rem;
-                }
-                .price-txt {
-                    font-size: 1.8rem;
-                }
-            }
-            .goods-item-size {
-                position: absolute;
-                right: 10px;
-                bottom: 14px;
-                color: @c-input;
-                font-size: 1.8rem;
-            }
+    }
+}
+
+// 商品单行
+.goods-item {
+    padding: 0;
+    border-bottom: 1px solid #dedede;
+    line-height: 1.6rem;
+    height: 98px;
+    position: relative;
+    img {
+        position: absolute;
+        top: 14px;
+        left: 10px;
+        width: 70px;
+        height: 70px;
+    }
+    .goods-item-title {
+        overflow-y: hidden;
+        position: absolute;
+        width: 50%;
+        top: 14px;
+        left: 91px;
+        font-size: 1.4rem;
+        color: @txt-color;
+    }
+    .price {
+        position: absolute;
+        bottom: 10px;
+        left: 91px;
+        color: @price-colo !important;
+        .@{xc}price {
+            font-size: 1.2rem;
         }
+        .price-txt {
+            font-size: 1.8rem;
+        }
+    }
+    .goods-item-size {
+        position: absolute;
+        right: 10px;
+        bottom: 14px;
+        color: @c-input;
+        font-size: 1.8rem;
     }
 }
 
@@ -672,7 +696,7 @@
         }
     }
 }
-
+// 发票详情
 .@{xc}invoice-info {
     ul{
         padding: 0 10px 1px;
@@ -693,5 +717,146 @@
             line-height: 45px;
             border-bottom: 0;
         }
+    }
+}
+
+// 订单列表
+.@{xc}order-list {
+    .order-footer {
+        text-align: right;
+        height: 50px;
+        position: relative;
+        .order-footer-left {
+            .title {
+                color: @txt-color;
+                font-size: 1.5rem;
+            }
+            .@{xc}price, .price-txt {
+                font-size: 1.5rem;
+                color: @price-colo;
+            }
+            .freight {
+                font-size: 1.4rem;
+                color: @c-txt;
+            }
+            margin-right: 95px;
+        }
+        button {
+            position: absolute;
+            top: 11px;
+            right: 10px;
+            width: 70px;
+            padding: 0;
+            min-width: 6rem;
+            height: 28px;
+            font-size: 1.5rem;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 5px;
+            background: #ef5656;
+        }
+    }
+    .order-daishouhuo {
+        .order-footer {
+            button {
+                background: none;
+                color: @c-txt;
+                border: 2px solid #959595;
+            }
+        }
+    }
+    .order-yiwancheng {
+        .order-footer-left {
+            margin-right: 10px;
+        }
+    }
+}
+
+// 我的收藏
+.@{xc}collect-list {
+    .goods-item {
+        .icon-you {
+            position: absolute;
+            top: 39px;
+            right: 10px;
+            
+        }
+    }
+}
+
+// 个人资料
+.user-info-box {
+    .xc-list {
+        li {
+            padding-right: 30px;
+            a{
+                display: block;
+                width: 100%;
+                position: relative;
+                .user-info-list-right {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
+                img.user-info-list-right {
+                    width: 30px;
+                    height: 30px;
+                    top: 8px;
+                    border-radius: 50%;
+                }
+            }
+        }
+    }
+}
+
+// 修改个人资料
+.update-user-box {
+    margin-top: 5px;
+    input {
+        padding: 0;
+        border: 0;
+        height: 40px;
+        width: 100%;
+        &.am-field-error,
+        &.am-field-valid,
+        &.am-field-valid:focus,
+        &.am-field-error:focus {
+            box-shadow: none !important;
+            border-color: transparent !important;
+        }
+    }
+    .send-code {
+        position: absolute;
+        top: 11px;
+        right: 10px;
+        width: 80px;
+        height: 24px;
+        line-height: 24px;
+        font-size: 1.4rem;
+        padding: 0;
+        color: @c-txt;
+        border: 1px solid #9d9d9d;
+        border-radius: 5px;
+        background: transparent;
+        &:disabled {
+            color: @c-input;
+            border-color: #d2d2d2;
+        }
+    }
+}
+.update-footer {
+    margin-top: 83px;
+    display: flex;
+    height: auto;
+    button {
+        flex: 1;
+        display: block;
+        margin: 0 10px 17px 10px;
+        height: 47px;
+        border: none;
+        font-size: 1.7rem;
+        border-radius: 5px;
+        color: #FFFFFF;
+        background: #F65353;
     }
 }

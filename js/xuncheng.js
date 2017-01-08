@@ -25,10 +25,6 @@ Date.prototype.taDateFormat = function(format) {
 
 /* 寻城项目工具js */
 $.xuncheng = {
-	session: {
-		goodsSize: 'XC-Goods-Data-Size',
-		goodsPosition: 'XC-Goods-Position',
-	},
 	load: function(msg) { // 页面加载开始
 		var msgTxt = msg || '数据加载中...';
 		var $load = $('#xc-modal-loading');
@@ -49,8 +45,11 @@ $.xuncheng = {
 	loadEnd: function() { // 页面加载完毕
 		$('#xc-modal-loading').modal('close')
 	},
-	back: function() {	// 返回上一页
+	back: function() { // 返回上一页
 		window.history.go(-1)
+		setTimeout(function() {
+			window.location.href = window.location.origin;
+		}, 300)
 	},
 	backTop: function(scroll) { // 返回顶部
 		var $backTop = $('#xc-back-top');
@@ -67,9 +66,7 @@ $.xuncheng = {
 		$('html, body').scrollTop(0)
 	},
 	share: function() {
-		$.DialogFx.alert({
-			content: '点击微信右上角菜单功能进行分享'
-		})
+		$.DialogFx.alert('点击微信右上角菜单功能进行分享')
 	},
 	toDecimal2: function(x) { // 始终保存2位小数
 		var f = parseFloat(x);
@@ -88,23 +85,34 @@ $.xuncheng = {
 		}
 		return s;
 	},
-	isLogin: function(){
-		var loginStore = $.AMUI.store.get('XCLOGIN');
-		if(loginStore) {
-			return true;
-		}else{
-			$.DialogFx.alert({content: '您还未登录，请先登录', end: function(){
-				window.location.href = './login.html'
-			}})
-			setTimeout(function(){
-				window.location.href = './login.html'
+	outLogin: function() {	// 退出登录
+		$.AMUI.store.remove('uid');
+		window.location.href = '../user/index.html'
+	},
+	reLogin: function(statusCode) { // 判断账户是否过期
+		if(statusCode == 10002) {
+			$.DialogFx.alert({
+				content: '账户已过期或未登录，请重新登录',
+				end: function() {
+					window.location.href = '../component/login.html'
+				}
+			})
+			setTimeout(function() {
+				window.location.href = '../component/login.html'
 			}, 2000)
-			
 			return false;
+		}else {
+			return true;
 		}
+	},
+	setUid: function(uid) { // 记录账户ID
+		$.AMUI.store.set('uid', uid);
+		return uid;
+	},
+	getUid: function() { // 获取账户ID
+		return $.AMUI.store.get('uid') || false
 	}
 }
-
 // 获取系统信息
 $.xuncheng.getSystem = function() {
 	var agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod']
@@ -216,17 +224,21 @@ $.xuncheng.getUrlParam = function(key, url) {
 	 * @demo gs.getUrlParam(null,"key")
 	 * @demo gs.getUrlParam(xx.com?id=1&name=22,"id")
 	 */
+
 	var newUrl = url || window.location;
 	newUrl = decodeURI(newUrl);
 	var params = {};
 	var arr = newUrl.split("?");
 	if(arr.length <= 1) {
-		return params;
+		return false;
 	}
 	arr = arr[1].split("&");
 	for(var i = 0, l = arr.length; i < l; i++) {
 		var a = arr[i].split("=");
 		params[a[0]] = a[1];
+	}
+	if($.isEmptyObject(params)) {
+		return false;
 	}
 	return key ? params[key] : params;
 }
@@ -270,10 +282,13 @@ $(function() {
 	})
 
 	// 解决移动端遮盖输入框
-	function mobileInputCover($elm) {
+	function mobileInputCover(elm) {
 		if($.xuncheng.getSystem() != 'PC') { // 解决移动端遮盖输入框事件
+			if($(elm).hasClass('no-cover')) {
+				return false;
+			}
 			$(window).one('resize', function() {
-				$elm.scrollIntoView()
+				elm.scrollIntoView()
 			})
 		}
 	}
@@ -318,25 +333,27 @@ $(function() {
 	}
 	// 绑定事件
 	DialogFx.prototype._initEvents = function() {
-			var self = this;
-			self.$confirmBtn.on('click', function(e) {
-				self.options.confirm(self)
-				self.close()
-			})
-			self.$cancelBtn.on('click', function(e) {
-				self.options.cancel(self)
-				self.close()
-			})
-			self.$overlay.on('touchstart', function(e) {
-				self.close()
-			})
-		}
-		// 打开
+		var self = this;
+		self.$confirmBtn.on('click', function(e) {
+			self.options.confirm(self)
+			self.close()
+		})
+		self.$cancelBtn.on('click', function(e) {
+			self.options.cancel(self)
+			self.close()
+		})
+		self.$overlay.on('touchstart', function(e) {
+			self.close()
+		})
+	}
+
+	// 打开
 	DialogFx.prototype.open = function() {
-			this.$el.addClass('xc-dialog-open')
-			this.options.open(this)
-		}
-		// 关闭
+		this.$el.addClass('xc-dialog-open')
+		this.options.open(this)
+	}
+
+	// 关闭
 	DialogFx.prototype.close = function() {
 		var self = this;
 		var xdContent = self.$el.find('.xc-dialog-content')
@@ -359,6 +376,7 @@ $(function() {
 	 * options
 	 * title	标题
 	 * content	内容
+	 * time		持续时间
 	 * anim		动画效果 0-5 或者 使用animated ['in','out']
 	 * open		打开回调
 	 * end		关闭回调
@@ -369,8 +387,14 @@ $(function() {
 		anim: ['susan', 'sandra', 'don', 'ken', 'alex'],
 		init: function(options) {
 			var animArr = $.DialogFx.anim;
+			if(typeof options == 'string') {
+				options = {
+					content: options
+				}
+			}
 			var opt = $.extend(true, {
 				title: '提示',
+				time: 1500,
 				content: '提示内容',
 				anim: 2,
 				open: function() {
@@ -408,6 +432,25 @@ $(function() {
 		}
 	};
 
+	$.DialogFx.msg = function(options) {
+		var newOpt = $.DialogFx.init(options);
+		var html = [];
+		html.push('<div class="xc-dialog ' + newOpt.xdialogAnim + ' ">')
+		html.push('<div class="xc-dialog-overlay"></div>')
+		html.push('<div class="xc-dialog-content ' + newOpt.xdContetAnim + ' ">')
+		html.push('<div class="am-modal-dialog">');
+		html.push('<div class="am-modal-bd">' + newOpt.opt.content + '</div>');
+		html.push('</div>');
+		html.push('</div>')
+		html.push('</div>')
+		
+		var dialog = new DialogFx($(html.join('')).appendTo('body'), newOpt.opt);
+		setTimeout(function(){
+			dialog.close()
+		}, newOpt.opt.time)
+		return dialog;
+	}
+
 	$.DialogFx.alert = function(options) {
 		var newOpt = $.DialogFx.init(options);
 		var html = [];
@@ -439,23 +482,29 @@ $(function() {
 		html.push('</div>');
 		html.push('</div>')
 		html.push('</div>')
-
 		return new DialogFx($(html.join('')).appendTo('body'), newOpt.opt)
 	};
-
+	$.DialogFx.alertError = function(txt, url) {
+		$.DialogFx.alert({content: txt || '服务器内部错误', end:function(){
+			if(url == 'login'){
+				window.location.href = '../component/login.html';
+			}else{
+				$.xuncheng.back()
+			}
+		}})
+	}
 });
 
-/*$(function(){
+$(function() {
 	var $videoBox = $('#xc-video-box');
 	var $videoPlay = $videoBox.children('.xc-video-play');
 	var $video = $videoBox.children('.xc-video');
 	var _video = $video[0];
-	$videoBox.on('click', function(){
+	$videoBox.on('click', function() {
 		_video.play()
 	});
-	
+
 	$video.on('playing', function() {
-	  	$videoBox.addClass('play')
+		$videoBox.addClass('play')
 	})
 })
-*/
