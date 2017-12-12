@@ -1,3 +1,4 @@
-# xuncheng
+# 小鹿寻城
 ## 访问
-[Demo](https://topoadmin.github.io/xuncheng)
+># 复制连接，使用移动设备打开
+http://m.xunchengweidao.com/xuncheng/
